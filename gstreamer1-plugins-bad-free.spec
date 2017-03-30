@@ -278,6 +278,11 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstwaylandsi
 chrpath --delete %{buildroot}/%{_libdir}/libgstadaptivedemux-%{majorminor}.so
 chrpath --delete %{buildroot}/%{_libdir}/libgstbadvideo-%{majorminor}.so
 
+%if 0%{?fedora} <= 24
+chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
+chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1102.0
+%endif
+
 # It is provide by freeworld, we don't need it here
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvdspu.so 
