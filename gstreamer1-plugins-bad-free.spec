@@ -9,8 +9,8 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.11.2
-Release:        3%{?gitcommit:.git%{shortcommit}}%{?dist}
+Version:        1.11.90
+Release:        2%{?gitcommit:.git%{shortcommit}}%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -521,10 +521,13 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 
 %changelog
 
-* Thu Mar 30 2017 - David Vasquez <davidjeremias82 AT gmail DOT com>  1.11.2-3
+* Thu Apr 20 2017 David Vásquez <davidva AT tutanota DOT com> 1.11.90-2
+- Updated to 1.11.90-2
+
+* Thu Mar 30 2017 - David Vasquez <davidva AT tutanota DOT com>  1.11.2-3
 - Rebuilt
 
-* Wed Mar 22 2017 - David Vasquez <davidjeremias82 AT gmail DOT com>  1.11.2-2
+* Wed Mar 22 2017 - David Vasquez <davidva AT tutanota DOT com>  1.11.2-2
 - Upstream
 
 * Fri Feb 24 2017 Wim Taymans <wtaymans@redhat.com> - 1.11.2-1
