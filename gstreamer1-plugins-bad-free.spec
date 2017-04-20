@@ -264,7 +264,7 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixe
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvb.so
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
+# chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgsthls.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstmpegtsdemux.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstmpegtsmux.so
