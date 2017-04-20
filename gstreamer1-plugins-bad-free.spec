@@ -260,7 +260,7 @@ EOF
 find %{buildroot}/ -name '*.la' -exec rm -f {} ';'
 # Kill rpath
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
+# chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvb.so
