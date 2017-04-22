@@ -114,7 +114,7 @@ operate on media data.
 gstreamer-plugins-bad contains plug-ins that aren't tested well enough,
 or the code is not of good enough quality.
 
-This package (%{name}-gtk) contains the gtksink output plugin.
+This package contains the gtksink/gtk output plugin.
 
 
 %if %{with extras}
@@ -130,7 +130,7 @@ operate on media data.
 gstreamer-plugins-bad contains plug-ins that aren't tested well enough,
 or the code is not of good enough quality.
 
-This package (%{name}-extras) contains
+This package contains
 extra "bad" plugins for sources (mythtv), sinks (fbdev) and
 effects (pitch) which are not used very much and require additional
 libraries to be installed.
@@ -148,7 +148,7 @@ operate on media data.
 gstreamer-plugins-bad contains plug-ins that aren't tested well enough,
 or the code is not of good enough quality.
 
-This package (%{name}-fluidsynth) contains the fluidsynth
+This package contains the fluidsynth
 plugin which allows playback of midi files.
 
 
@@ -163,7 +163,7 @@ operate on media data.
 gstreamer-plugins-bad contains plug-ins that aren't tested well enough,
 or the code is not of good enough quality.
 
-This package (%{name}-wildmidi) contains the wildmidi
+This package contains the wildmidi
 plugin which allows playback of midi files.
 %endif
 
@@ -199,7 +199,11 @@ aren't tested well enough, or the code is not of good enough quality.
     --disable-mimic --disable-libmms --disable-mpeg2enc --disable-mplex \
     --disable-neon --disable-rtmp --disable-xvid \
     --disable-flite --disable-mpg123 --disable-sbc --disable-opencv \
-    --disable-spandsp --disable-voamrwbenc --disable-x265
+    --disable-spandsp --disable-voamrwbenc --disable-x265  
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=655517
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+ 
 make %{?_smp_mflags}
 
 
@@ -256,10 +260,16 @@ cat > %{buildroot}/%{_datadir}/appdata/gstreamer-bad-free.appdata.xml <<EOF
 </component>
 EOF
 
+# GStreamer gtk plugin was renamed to 'gtk' and libgstcamerabin2 to libgstcamerabin
+# https://bugzilla.gnome.org/show_bug.cgi?id=779344
+# https://github.com/GStreamer/gst-plugins-bad/commit/eb2dae8fd6aea04673fdd5b0fdf05e4e2ce1c2ee
+ln -sf %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so 
+ln -sf %{_libdir}/gstreamer-%{majorminor}/libgstgtk.so %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so 
+
 %find_lang gst-plugins-bad-%{majorminor}
 find %{buildroot}/ -name '*.la' -exec rm -f {} ';'
 # Kill rpath
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
+# chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
@@ -278,12 +288,19 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstwaylandsi
 chrpath --delete %{buildroot}/%{_libdir}/libgstadaptivedemux-%{majorminor}.so
 chrpath --delete %{buildroot}/%{_libdir}/libgstbadvideo-%{majorminor}.so
 
-%if 0%{?fedora} <= 24
+chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1190.0
+chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtk.so
+chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
+chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1190.0
+# chrpath --delete %{buildroot}/%{_libdir}/libgstbadallocators-1.0.so.0.1190.0
+chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
+
+%if 0%{?fedora} <= 24
 chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1102.0
 %endif
 
-# It is provide by freeworld, we don't need it here
+# It is provided by freeworld, we don't need it here
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvdspu.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so 
@@ -329,11 +346,12 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %if 0%{?fedora}
 %{_libdir}/libgstwayland-%{majorminor}.so.*
 %endif
-
+%exclude %{_libdir}/libgstbadallocators-1.0.so.0.1190.0
 %{_libdir}/girepository-1.0/GstGL-1.0.typelib
 %{_libdir}/girepository-1.0/GstInsertBin-1.0.typelib
 %{_libdir}/girepository-1.0/GstMpegts-1.0.typelib
 %{_libdir}/girepository-1.0/GstPlayer-1.0.typelib
+%{_libdir}/girepository-1.0/GstBadAllocators-1.0.typelib
 
 # Plugins without external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstaccurip.so
@@ -349,6 +367,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstautoconvert.so
 %{_libdir}/gstreamer-%{majorminor}/libgstbayer.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
+%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcoloreffects.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
 %{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
@@ -378,7 +397,8 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstnetsim.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpcapparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpnm.so
-%{_libdir}/gstreamer-%{majorminor}/libgstrawparse.so
+# {_libdir}/gstreamer-%{majorminor}/libgstrawparse.so
+%{_libdir}/gstreamer-%{majorminor}/libgstlegacyrawparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstremovesilence.so
 %{_libdir}/gstreamer-%{majorminor}/libgstresindvd.so
 %{_libdir}/gstreamer-%{majorminor}/libgstrfbsrc.so
@@ -414,9 +434,11 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstdtls.so
 %{_libdir}/gstreamer-%{majorminor}/libgsthls.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgsm.so
-%{_libdir}/gstreamer-%{majorminor}/libgstkmssink.so
+%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
+%{_libdir}/gstreamer-%{majorminor}/libgstgtk.so
 %{_libdir}/gstreamer-%{majorminor}/libgstladspa.so
 %{_libdir}/gstreamer-%{majorminor}/libgstmusepack.so
+%{_libdir}/gstreamer-%{majorminor}/libgstkms.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopengl.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopusparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsndfile.so
@@ -434,6 +456,10 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 
 %files gtk
 # Plugins with external dependencies
+# GStreamer gtk plugin was renamed to 'gtk'
+# https://bugzilla.gnome.org/show_bug.cgi?id=779344
+# https://github.com/GStreamer/gst-plugins-bad/commit/eb2dae8fd6aea04673fdd5b0fdf05e4e2ce1c2ee
+%{_libdir}/gstreamer-%{majorminor}/libgstgtk.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
 
 
@@ -455,8 +481,10 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenexr.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 %{_libdir}/gstreamer-%{majorminor}/libgstschro.so
-%{_libdir}/gstreamer-%{majorminor}/libgstteletextdec.so
+#%{_libdir}/gstreamer-%{majorminor}/libgstteletextdec.so
+#%{_libdir}/gstreamer-%{majorminor}/libgstteletex.so
 %{_libdir}/gstreamer-%{majorminor}/libgstzbar.so
+%{_libdir}/gstreamer-1.0/libgstteletext.so
 
 
 %files fluidsynth
@@ -477,6 +505,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_datadir}/gir-1.0/GstInsertBin-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstMpegts-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstPlayer-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstBadAllocators-1.0.gir
 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so
@@ -493,7 +522,8 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %if 0%{?fedora}
 %{_libdir}/libgstwayland-%{majorminor}.so
 %endif
-
+%exclude %{_libdir}/libgstbadallocators-%{majorminor}.so.0
+%{_libdir}/libgstbadallocators-%{majorminor}.so
 %{_libdir}/gstreamer-%{majorminor}/include/gst/gl/gstglconfig.h
 
 %{_includedir}/gstreamer-%{majorminor}/gst/audio
@@ -507,6 +537,8 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_includedir}/gstreamer-%{majorminor}/gst/uridownloader
 %{_includedir}/gstreamer-%{majorminor}/gst/gl
 %{_includedir}/gstreamer-%{majorminor}/gst/video
+%{_includedir}/gstreamer-1.0/gst/allocators/badallocators.h
+%{_includedir}/gstreamer-1.0/gst/allocators/gstphysmemory.h
 
 # pkg-config files
 %{_libdir}/pkgconfig/gstreamer-bad-audio-%{majorminor}.pc
@@ -518,6 +550,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-mpegts-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-player-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-plugins-bad-%{majorminor}.pc
+%{_libdir}/pkgconfig/gstreamer-bad-allocators-1.0.pc
 
 %changelog
 
