@@ -288,10 +288,10 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstwaylandsi
 chrpath --delete %{buildroot}/%{_libdir}/libgstadaptivedemux-%{majorminor}.so
 chrpath --delete %{buildroot}/%{_libdir}/libgstbadvideo-%{majorminor}.so
 
-chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1190.0
+# chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1190.0
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtk.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
-chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1190.0
+# chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1190.0
 # chrpath --delete %{buildroot}/%{_libdir}/libgstbadallocators-1.0.so.0.1190.0
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
@@ -333,6 +333,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so.*
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so.*
+%{_libdir}/libgstbadallocators-%{majorminor}.so.*
 %{_libdir}/libgstbadaudio-%{majorminor}.so.*
 %{_libdir}/libgstbadbase-%{majorminor}.so.*
 %{_libdir}/libgstbadvideo-%{majorminor}.so.*
@@ -346,7 +347,6 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %if 0%{?fedora}
 %{_libdir}/libgstwayland-%{majorminor}.so.*
 %endif
-%exclude %{_libdir}/libgstbadallocators-1.0.so.0.1190.0
 %{_libdir}/girepository-1.0/GstGL-1.0.typelib
 %{_libdir}/girepository-1.0/GstInsertBin-1.0.typelib
 %{_libdir}/girepository-1.0/GstMpegts-1.0.typelib
@@ -371,6 +371,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcoloreffects.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
 %{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
+%{_libdir}/gstreamer-%{majorminor}/libgstfaceoverlay.so
 %if %{with extras}
 %{_libdir}/gstreamer-%{majorminor}/libgstfbdevsink.so
 %endif
@@ -520,7 +521,6 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %if 0%{?fedora}
 %{_libdir}/libgstwayland-%{majorminor}.so
 %endif
-%exclude %{_libdir}/libgstbadallocators-%{majorminor}.so.0
 %{_libdir}/libgstbadallocators-%{majorminor}.so
 %{_libdir}/gstreamer-%{majorminor}/include/gst/gl/gstglconfig.h
 
