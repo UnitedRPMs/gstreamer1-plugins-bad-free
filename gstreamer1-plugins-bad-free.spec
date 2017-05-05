@@ -296,6 +296,9 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixe
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 
+chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1191.0
+chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1191.0
+
 %if 0%{?fedora} <= 24
 chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1102.0
 %endif
