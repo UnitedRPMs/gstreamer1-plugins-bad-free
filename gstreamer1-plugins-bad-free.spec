@@ -190,7 +190,7 @@ aren't tested well enough, or the code is not of good enough quality.
 %setup -T -D -n gst-plugins-bad-%{version}
 
 %build
-%configure --disable-silent-rules --disable-fatal-warnings \
+%configure --disable-fatal-warnings \
     --with-package-name="Fedora GStreamer-plugins-bad package" \
     --with-package-origin="http://download.fedoraproject.org" \
     %{!?with_extras:--disable-fbdev --disable-decklink --disable-linsys} \
