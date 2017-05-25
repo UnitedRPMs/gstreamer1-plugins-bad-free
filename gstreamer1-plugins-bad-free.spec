@@ -10,7 +10,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.11.91
-Release:        2%{?gitcommit:.git%{shortcommit}}%{?dist}
+Release:        3%{?gitcommit:.git%{shortcommit}}%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -550,6 +550,9 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-bad-allocators-1.0.pc
 
 %changelog
+
+* Thu May 25 2017 David Vásquez <davidva AT tutanota DOT com> 1.11.91-3
+- Rebuilt for libgstrawparse.so issue
 
 * Sat Apr 29 2017 David Vásquez <davidva AT tutanota DOT com> 1.11.91-2
 - Updated to 1.11.91-2
