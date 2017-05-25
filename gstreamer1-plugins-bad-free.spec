@@ -401,7 +401,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstnetsim.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpcapparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpnm.so
-# {_libdir}/gstreamer-%{majorminor}/libgstrawparse.so
+%exclude %{_libdir}/gstreamer-%{majorminor}/libgstrawparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstlegacyrawparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstremovesilence.so
 %{_libdir}/gstreamer-%{majorminor}/libgstresindvd.so
