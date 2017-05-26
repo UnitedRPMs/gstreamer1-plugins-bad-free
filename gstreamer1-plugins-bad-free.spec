@@ -9,8 +9,8 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.11.91
-Release:        3%{?gitcommit:.git%{shortcommit}}%{?dist}
+Version:        1.12.0
+Release:        2%{?gitcommit:.git%{shortcommit}}%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -296,8 +296,8 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixe
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 
-chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1191.0
-chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1191.0
+#chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1191.0
+# chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1191.0
 
 # It is provided by freeworld, we don't need it here
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
@@ -397,6 +397,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstnetsim.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpcapparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpnm.so
+# libgstrawparse.so is provided by gstreamer1-plugins-base
 %exclude %{_libdir}/gstreamer-%{majorminor}/libgstrawparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstlegacyrawparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstremovesilence.so
@@ -550,6 +551,9 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-bad-allocators-1.0.pc
 
 %changelog
+
+* Thu May 25 2017 David Vásquez <davidva AT tutanota DOT com> 1.12.0-2
+- Updated to 1.12.0-2
 
 * Thu May 25 2017 David Vásquez <davidva AT tutanota DOT com> 1.11.91-3
 - Rebuilt for libgstrawparse.so issue
