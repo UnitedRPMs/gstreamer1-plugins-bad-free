@@ -299,6 +299,7 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.
 #chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1191.0
 # chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1191.0
 chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1200.0
+chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1200.0
 
 # It is provided by freeworld, we don't need it here
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
