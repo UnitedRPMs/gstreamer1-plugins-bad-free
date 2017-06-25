@@ -9,7 +9,7 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.12.0
+Version:        1.12.1
 Release:        2%{?gitcommit:.git%{shortcommit}}%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -298,8 +298,8 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.
 
 #chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1191.0
 # chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1191.0
-chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1200.0
-chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1200.0
+#chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1200.0
+#chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1200.0
 
 # It is provided by freeworld, we don't need it here
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
@@ -553,6 +553,9 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-bad-allocators-1.0.pc
 
 %changelog
+
+* Sat Jun 24 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 1.12.1-2
+- Updated to 1.12.1-2
 
 * Thu May 25 2017 David Vásquez <davidva AT tutanota DOT com> 1.12.0-2
 - Updated to 1.12.0-2
