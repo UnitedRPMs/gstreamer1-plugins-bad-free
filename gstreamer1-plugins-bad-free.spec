@@ -62,6 +62,7 @@ BuildRequires:  bluez-libs-devel >= 5.0
 BuildRequires:  libwebp-devel
 
 BuildRequires:  chrpath
+BuildRequires:	autoconf
 
 %if %{with extras}
 BuildRequires:  libbs2b-devel >= 3.1.0
