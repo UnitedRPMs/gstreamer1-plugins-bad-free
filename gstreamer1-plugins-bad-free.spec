@@ -300,10 +300,10 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixe
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 
-#chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1191.0
-# chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1191.0
-#chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1200.0
-#chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1200.0
+%if 0%{?fedora} < 27
+chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1202.0
+chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1202.0
+%endif
 
 # It is provided by freeworld, we don't need it here
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
