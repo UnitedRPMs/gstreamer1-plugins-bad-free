@@ -10,7 +10,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.12.2
-Release:        2%{?gitcommit:.git%{shortcommit}}%{?dist}
+Release:        3%{?gitcommit:.git%{shortcommit}}%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -107,6 +107,9 @@ is not of good enough quality.
 %package gtk
 Summary:         GStreamer "bad" plugins gtk plugin
 Requires:        %{name} = %{version}-%{release}
+%ifarch x86_64
+Provides:	 gstreamer1(element-gtksink)()(64bit)
+%endif
 
 %description gtk
 GStreamer is a streaming media framework, based on graphs of elements which
@@ -554,6 +557,9 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-bad-allocators-1.0.pc
 
 %changelog
+
+* Sun Aug 13 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 1.12.2-3
+- Fixed issue with libreoffice-gtk3
 
 * Thu Jul 20 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 1.12.2-2
 - Updated to 1.12.2-2
