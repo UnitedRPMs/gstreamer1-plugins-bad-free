@@ -9,8 +9,8 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.12.2
-Release:        3%{?gitcommit:.git%{shortcommit}}%{?dist}
+Version:        1.12.3
+Release:        7%{?gitcommit:.git%{shortcommit}}%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -203,7 +203,7 @@ aren't tested well enough, or the code is not of good enough quality.
     --disable-mimic --disable-libmms --disable-mpeg2enc --disable-mplex \
     --disable-neon --disable-rtmp --disable-xvid \
     --disable-flite --disable-mpg123 --disable-sbc --disable-opencv --enable-silent-rules \
-    --disable-spandsp --disable-voamrwbenc --disable-x265  
+    --disable-spandsp --disable-voamrwbenc --disable-x265 --disable-vulkan  
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=655517
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
@@ -332,9 +332,9 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_datadir}/gstreamer-%{majorminor}/presets/GstFreeverb.prs
 
 # opencv data
-#%dir %{_datadir}/gst-plugins-bad/%{majorminor}/opencv_haarcascades/
-#%{_datadir}/gst-plugins-bad/%{majorminor}/opencv_haarcascades/fist.xml
-#%{_datadir}/gst-plugins-bad/%{majorminor}/opencv_haarcascades/palm.xml
+#dir {_datadir}/gst-plugins-bad/{majorminor}/opencv_haarcascades/
+#{_datadir}/gst-plugins-bad/{majorminor}/opencv_haarcascades/fist.xml
+#{_datadir}/gst-plugins-bad/{majorminor}/opencv_haarcascades/palm.xml
 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so.*
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so.*
@@ -403,6 +403,8 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstnetsim.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpcapparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpnm.so
+# We need check if vulkan is provided by other gstreamer 
+#{_libdir}/gstreamer-#{majorminor}/libgstvulkan.so
 # libgstrawparse.so is provided by gstreamer1-plugins-base
 %exclude %{_libdir}/gstreamer-%{majorminor}/libgstrawparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstlegacyrawparse.so
@@ -482,12 +484,12 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstmodplug.so
 %{_libdir}/gstreamer-%{majorminor}/libgstofa.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenal.so
-#%{_libdir}/gstreamer-%{majorminor}/libgstopencv.so
+#{_libdir}/gstreamer-{majorminor}/libgstopencv.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenexr.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 %{_libdir}/gstreamer-%{majorminor}/libgstschro.so
-#%{_libdir}/gstreamer-%{majorminor}/libgstteletextdec.so
-#%{_libdir}/gstreamer-%{majorminor}/libgstteletex.so
+#{_libdir}/gstreamer-{majorminor}/libgstteletextdec.so
+#{_libdir}/gstreamer-{majorminor}/libgstteletex.so
 %{_libdir}/gstreamer-%{majorminor}/libgstzbar.so
 %{_libdir}/gstreamer-1.0/libgstteletext.so
 
@@ -557,6 +559,9 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-bad-allocators-1.0.pc
 
 %changelog
+
+* Mon Sep 18 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 1.12.3-7
+- Updated to 1.12.3-7
 
 * Sun Aug 13 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 1.12.2-3
 - Fixed issue with libreoffice-gtk3
