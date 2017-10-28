@@ -202,7 +202,7 @@ aren't tested well enough, or the code is not of good enough quality.
     --disable-dts --disable-faac --disable-faad --disable-nas \
     --disable-mimic --disable-libmms --disable-mpeg2enc --disable-mplex \
     --disable-neon --disable-rtmp --disable-xvid \
-    --disable-flite --disable-mpg123 --disable-sbc --disable-opencv --enable-silent-rules \
+    --disable-flite --disable-mpg123 --disable-sbc --disable-opencv \
     --disable-spandsp --disable-voamrwbenc --disable-x265 --disable-vulkan  
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=655517
