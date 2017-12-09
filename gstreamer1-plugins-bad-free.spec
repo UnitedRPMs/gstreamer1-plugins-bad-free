@@ -9,8 +9,8 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.12.3
-Release:        8%{?gitcommit:.git%{shortcommit}}%{?dist}
+Version:        1.12.4
+Release:        7%{?gitcommit:.git%{shortcommit}}%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -556,6 +556,9 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-bad-allocators-1.0.pc
 
 %changelog
+
+* Fri Dec 08 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 1.12.4-7
+- Updated to 1.12.4-7
 
 * Sun Oct 29 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 1.12.3-8
 - Rebuilt with mesa-libEGL #issue:https://github.com/UnitedRPMs/issues/issues/13
