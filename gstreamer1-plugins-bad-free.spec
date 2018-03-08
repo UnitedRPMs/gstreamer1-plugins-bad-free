@@ -21,18 +21,17 @@ Source1:        gst-p-bad-cleanup.sh
 
 BuildRequires:  gstreamer1-devel >= %{version}
 BuildRequires:  gstreamer1-plugins-base-devel >= %{version}
-
 BuildRequires:  check
 BuildRequires:  gettext-devel
 BuildRequires:  libXt-devel
 BuildRequires:  gtk-doc
 BuildRequires:  gobject-introspection-devel >= %{_gobject_introspection}
-
 BuildRequires:  bzip2-devel
 BuildRequires:  exempi-devel
 BuildRequires:  gsm-devel
 BuildRequires:  jasper-devel
 BuildRequires:  ladspa-devel
+BuildRequires:  lcms2-devel
 BuildRequires:  libdvdnav-devel
 BuildRequires:  libexif-devel
 BuildRequires:  libiptcdata-devel
@@ -50,7 +49,7 @@ BuildRequires:  wavpack-devel
 BuildRequires:  opus-devel
 BuildRequires:  nettle-devel
 BuildRequires:  libgcrypt-devel
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} > 7
 BuildRequires:  libwayland-client-devel
 %endif
 BuildRequires:  gnutls-devel
@@ -60,10 +59,10 @@ BuildRequires:  pkgconfig(libusb-1.0)
 BuildRequires:  gtk3-devel >= 3.4
 BuildRequires:  bluez-libs-devel >= 5.0
 BuildRequires:  libwebp-devel
-
-BuildRequires:  chrpath
-BuildRequires:	autoconf
-
+BuildRequires:  mesa-libEGL-devel
+#BuildRequires:  vulkan-devel
+#BuildRequires:  mesa-vulkan-devel
+BuildRequires:  webrtc-audio-processing-devel
 %if %{with extras}
 BuildRequires:  libbs2b-devel >= 3.1.0
 ## Plugins not ported
@@ -86,7 +85,6 @@ BuildRequires:  libvdpau-devel
 BuildRequires:  openal-soft-devel
 #BuildRequires:  opencv-devel
 BuildRequires:  openjpeg-devel
-BuildRequires:  schroedinger-devel
 ## Plugins not ported
 #BuildRequires:  SDL-devel
 #BuildRequires:  slv2-devel
@@ -95,7 +93,8 @@ BuildRequires:  zbar-devel
 BuildRequires:  zvbi-devel
 BuildRequires:  OpenEXR-devel
 %endif
-BuildRequires:  mesa-libEGL-devel
+BuildRequires:	chrpath
+
 
 
 %description
@@ -311,6 +310,46 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstqmlgl.so
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so 
 #
 
+# It is provided by plugins-base, we don't need it here
+rm -f %{buildroot}/%{_libdir}/girepository-1.0/GstGL-1.0.typelib
+rm -f %{buildroot}/%{_libdir}/gstreamer-1.0/libgstaudiomixer.so
+rm -f %{buildroot}/%{_libdir}/gstreamer-1.0/libgstopengl.so
+rm -f %{buildroot}/%{_libdir}/libgstgl-1.0.so.0
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/base/gstaggregator.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/allocators/gstphysmemory.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudioaggregator.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/egl/gsteglimage.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/egl/gstgldisplay_egl.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/egl/gstglmemoryegl.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gl.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstgl_fwd.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglapi.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglbasefilter.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglbasememory.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglbuffer.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglbufferpool.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglcontext.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstgldebug.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstgldisplay.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglfilter.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglformat.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglframebuffer.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglmemorypbo.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstgloverlaycompositor.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglquery.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglrenderbuffer.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglshader.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglshaderstrings.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglsl.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglupload.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglutils.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglviewconvert.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/gstglwindow.h
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/gl/x11/gstgldisplay_x11.h
+rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/include/gst/gl/gstglconfig.h
+rm -f %{buildroot}/%{_libdir}/libgstgl-%{majorminor}.so
+rm -f %{buildroot}/%{_libdir}/pkgconfig/gstreamer-gl-%{majorminor}.pc
+rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 %post -p /sbin/ldconfig
 
@@ -479,7 +518,10 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenexr.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 %{_libdir}/gstreamer-%{majorminor}/libgstzbar.so
-%{_libdir}/gstreamer-1.0/libgstteletext.so
+%{_libdir}/gstreamer-%{majorminor}/libgstteletext.so
+%{_libdir}/gstreamer-%{majorminor}/libgstcolormanagement.so
+%{_libdir}/gstreamer-%{majorminor}/libgstopenglmixers.so
+%{_libdir}/gstreamer-%{majorminor}/libgstwebrtcdsp.so
 
 
 %files fluidsynth
@@ -521,7 +563,6 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/libgstwebrtc-1.0.so
 %{_libdir}/libgstwebrtc-1.0.so.0
 
-%{_includedir}/gstreamer-%{majorminor}/gst/audio
 %{_includedir}/gstreamer-%{majorminor}/gst/basecamerabinsrc
 %{_includedir}/gstreamer-%{majorminor}/gst/codecparsers
 %{_includedir}/gstreamer-%{majorminor}/gst/insertbin
@@ -531,6 +572,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_includedir}/gstreamer-%{majorminor}/gst/uridownloader
 %{_includedir}/gstreamer-%{majorminor}/gst/video
 %{_includedir}/gstreamer-%{majorminor}/gst/isoff/gstisoff.h
+%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstnonstreamaudiodecoder.h
 %{_includedir}/gstreamer-%{majorminor}/gst/webrtc/
 
 # pkg-config files
@@ -542,6 +584,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so
 %{_libdir}/pkgconfig/gstreamer-player-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-plugins-bad-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-webrtc-1.0.pc
+
 
 %changelog
 
