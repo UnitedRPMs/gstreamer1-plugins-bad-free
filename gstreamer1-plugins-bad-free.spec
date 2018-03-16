@@ -9,8 +9,8 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.13.90
-Release:        7%{?gitcommit:.git%{shortcommit}}%{?dist}
+Version:        1.13.91
+Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -587,6 +587,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Fri Mar 16 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.13.91-7 
+- Updated to 1.13.91-7
 
 * Sun Mar 04 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.13.90-7  
 - Updated to 1.13.90-7
