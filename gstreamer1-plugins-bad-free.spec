@@ -385,11 +385,11 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %if 0%{?fedora}
 %{_libdir}/libgstwayland-%{majorminor}.so.*
 %endif
-%{_libdir}/libgstisoff-%{majorminor}.so.0.1390.0
-%{_libdir}/libgstwebrtc-%{majorminor}.so.0.1390.0
 %{_libdir}/girepository-1.0/GstInsertBin-1.0.typelib
 %{_libdir}/girepository-1.0/GstMpegts-1.0.typelib
 %{_libdir}/girepository-1.0/GstPlayer-1.0.typelib
+%{_libdir}/libgstisoff-1.0.so.0.*.0
+%{_libdir}/libgstwebrtc-1.0.so.0.*.0
 
 # Plugins without external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstaccurip.so
@@ -574,6 +574,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_includedir}/gstreamer-%{majorminor}/gst/isoff/gstisoff.h
 %{_includedir}/gstreamer-%{majorminor}/gst/audio/gstnonstreamaudiodecoder.h
 %{_includedir}/gstreamer-%{majorminor}/gst/webrtc/
+%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-bad-prelude.h
 
 # pkg-config files
 %{_libdir}/pkgconfig/gstreamer-bad-audio-%{majorminor}.pc
