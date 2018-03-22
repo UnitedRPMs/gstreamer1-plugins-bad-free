@@ -9,7 +9,7 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.13.91
+Version:        1.14.0
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -388,6 +388,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/girepository-1.0/GstInsertBin-1.0.typelib
 %{_libdir}/girepository-1.0/GstMpegts-1.0.typelib
 %{_libdir}/girepository-1.0/GstPlayer-1.0.typelib
+%{_libdir}/girepository-1.0/GstWebRTC-1.0.typelib
 %{_libdir}/libgstisoff-1.0.so.0.*.0
 %{_libdir}/libgstwebrtc-1.0.so.0.*.0
 
@@ -541,6 +542,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstInsertBin-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstMpegts-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstPlayer-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so
@@ -588,6 +590,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Wed Mar 21 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.14.0-7 
+- Updated to 1.14.0-7
 
 * Fri Mar 16 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.13.91-7 
 - Updated to 1.13.91-7
