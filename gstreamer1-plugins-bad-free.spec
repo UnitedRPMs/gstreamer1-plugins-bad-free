@@ -9,7 +9,7 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.14.0
+Version:        1.14.1
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -590,6 +590,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Mon May 21 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.14.1-7 
+- Updated to 1.14.1-7
 
 * Wed Mar 21 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.14.0-7 
 - Updated to 1.14.0-7
