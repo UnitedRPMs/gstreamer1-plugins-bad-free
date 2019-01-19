@@ -9,7 +9,7 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.14.4
+Version:        1.15.1
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -275,7 +275,6 @@ find %{buildroot}/ -name '*.la' -exec rm -f {} ';'
 # Kill rpath
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvb.so
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
@@ -290,13 +289,7 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstvdpau.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstvideoparsersbad.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstwaylandsink.so
 chrpath --delete %{buildroot}/%{_libdir}/libgstadaptivedemux-%{majorminor}.so
-chrpath --delete %{buildroot}/%{_libdir}/libgstbadvideo-%{majorminor}.so
 
-# chrpath --delete %{buildroot}/%{_libdir}/libgstbadaudio-1.0.so.0.1190.0
-# chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtk.so
-# chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
-# chrpath --delete %{buildroot}/%{_libdir}/libgstgl-1.0.so.0.1190.0
-# chrpath --delete %{buildroot}/%{_libdir}/libgstbadallocators-1.0.so.0.1190.0
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 
@@ -351,11 +344,6 @@ rm -f %{buildroot}/%{_libdir}/libgstgl-%{majorminor}.so
 rm -f %{buildroot}/%{_libdir}/pkgconfig/gstreamer-gl-%{majorminor}.pc
 rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
-%post -p /sbin/ldconfig
-
-
-%postun -p /sbin/ldconfig
-
 
 %files -f gst-plugins-bad-%{majorminor}.lang
 %license COPYING COPYING.LIB
@@ -375,7 +363,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so.*
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so.*
 %{_libdir}/libgstbadaudio-%{majorminor}.so.*
-%{_libdir}/libgstbadvideo-%{majorminor}.so.*
+#{_libdir}/libgstbadvideo-%{majorminor}.so.*
 %{_libdir}/libgstcodecparsers-%{majorminor}.so.*
 %{_libdir}/libgstinsertbin-%{majorminor}.so.*
 %{_libdir}/libgstmpegts-%{majorminor}.so.*
@@ -407,7 +395,13 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcoloreffects.so
-%{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
+
+%{_libdir}/gstreamer-%{majorminor}/libgstclosedcaption.so
+%{_libdir}/libgstsctp-1.0.so.0
+%{_libdir}/libgstsctp-1.0.so.0.0.0
+# Now in gstreamer1-plugins-base
+#{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
+#
 %{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
 %{_libdir}/gstreamer-%{majorminor}/libgstfaceoverlay.so
 %if %{with extras}
@@ -452,7 +446,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstsmooth.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsmoothstreaming.so
 %{_libdir}/gstreamer-%{majorminor}/libgstspeed.so
-%{_libdir}/gstreamer-%{majorminor}/libgststereo.so
+#{_libdir}/gstreamer-%{majorminor}/libgststereo.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsubenc.so
 %{_libdir}/gstreamer-%{majorminor}/libgsttimecode.so
 %{_libdir}/gstreamer-%{majorminor}/libgstuvch264.so
@@ -477,7 +471,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgsthls.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgsm.so
 %{_libdir}/gstreamer-%{majorminor}/libgstladspa.so
-%{_libdir}/gstreamer-%{majorminor}/libgstmusepack.so
+#{_libdir}/gstreamer-%{majorminor}/libgstmusepack.so
 %{_libdir}/gstreamer-%{majorminor}/libgstkms.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopusparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsndfile.so
@@ -498,7 +492,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 # GStreamer gtk plugin was renamed to 'gtk'
 # https://bugzilla.gnome.org/show_bug.cgi?id=779344
 # https://github.com/GStreamer/gst-plugins-bad/commit/eb2dae8fd6aea04673fdd5b0fdf05e4e2ce1c2ee
-#####{_libdir}/gstreamer-{majorminor}/libgstgtk.so
+
+# Now gstreamer1-plugins-good has libgstgtk.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
 
 
@@ -521,7 +516,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstzbar.so
 %{_libdir}/gstreamer-%{majorminor}/libgstteletext.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcolormanagement.so
-%{_libdir}/gstreamer-%{majorminor}/libgstopenglmixers.so
+#{_libdir}/gstreamer-%{majorminor}/libgstopenglmixers.so
 %{_libdir}/gstreamer-%{majorminor}/libgstwebrtcdsp.so
 
 
@@ -544,10 +539,11 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstPlayer-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
 
+/usr/lib64/libgstsctp-1.0.so
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so
 %{_libdir}/libgstbadaudio-%{majorminor}.so
-%{_libdir}/libgstbadvideo-%{majorminor}.so
+#{_libdir}/libgstbadvideo-%{majorminor}.so
 %{_libdir}/libgstcodecparsers-%{majorminor}.so
 %{_libdir}/libgstinsertbin-%{majorminor}.so
 %{_libdir}/libgstmpegts-%{majorminor}.so
@@ -572,24 +568,32 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_includedir}/gstreamer-%{majorminor}/gst/mpegts
 %{_includedir}/gstreamer-%{majorminor}/gst/player
 %{_includedir}/gstreamer-%{majorminor}/gst/uridownloader
-%{_includedir}/gstreamer-%{majorminor}/gst/video
+#{_includedir}/gstreamer-%{majorminor}/gst/video
 %{_includedir}/gstreamer-%{majorminor}/gst/isoff/gstisoff.h
 %{_includedir}/gstreamer-%{majorminor}/gst/audio/gstnonstreamaudiodecoder.h
 %{_includedir}/gstreamer-%{majorminor}/gst/webrtc/
 %{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-bad-prelude.h
 
+%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstplanaraudioadapter.h
+%{_includedir}/gstreamer-%{majorminor}/gst/sctp/sctp-prelude.h
+%{_includedir}/gstreamer-%{majorminor}/gst/sctp/sctpreceivemeta.h
+%{_includedir}/gstreamer-%{majorminor}/gst/sctp/sctpsendmeta.h
+
 # pkg-config files
 %{_libdir}/pkgconfig/gstreamer-bad-audio-%{majorminor}.pc
-%{_libdir}/pkgconfig/gstreamer-bad-video-%{majorminor}.pc
+#{_libdir}/pkgconfig/gstreamer-bad-video-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-codecparsers-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-insertbin-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-mpegts-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-player-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-plugins-bad-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-webrtc-1.0.pc
-
+/usr/lib64/pkgconfig/gstreamer-sctp-1.0.pc
 
 %changelog
+
+* Fri Jan 18 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.15.1-7 
+- Updated to 1.15.1
 
 * Wed Oct 03 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.14.4-7 
 - Updated to 1.14.4-7
