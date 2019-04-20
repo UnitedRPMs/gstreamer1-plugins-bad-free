@@ -9,7 +9,7 @@
 %endif
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.15.2
+Version:        1.16.0
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -94,7 +94,7 @@ BuildRequires:  zvbi-devel
 BuildRequires:  OpenEXR-devel
 %endif
 BuildRequires:	chrpath
-
+BuildRequires:	make
 
 
 %description
@@ -591,6 +591,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 /usr/lib64/pkgconfig/gstreamer-sctp-1.0.pc
 
 %changelog
+
+* Fri Apr 19 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.0-7
+- Updated to 1.16.0
 
 * Wed Feb 27 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.15.2-7
 - Updated to 1.15.2-7
