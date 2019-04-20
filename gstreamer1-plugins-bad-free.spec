@@ -287,7 +287,7 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsmoothstr
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstuvch264.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstvdpau.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstvideoparsersbad.so
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstwaylandsink.so
+#chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstwaylandsink.so
 chrpath --delete %{buildroot}/%{_libdir}/libgstadaptivedemux-%{majorminor}.so
 
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
