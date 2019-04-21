@@ -50,7 +50,7 @@ BuildRequires:  opus-devel
 BuildRequires:  nettle-devel
 BuildRequires:  libgcrypt-devel
 %if 0%{?fedora} || 0%{?rhel} > 7
-BuildRequires:  libwayland-client-devel
+BuildRequires:  libwayland-client-devel wayland-devel
 %endif
 BuildRequires:  gnutls-devel
 BuildRequires:  libsrtp-devel
@@ -370,7 +370,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstplayer-%{majorminor}.so.*
 %{_libdir}/libgstphotography-%{majorminor}.so.*
 %{_libdir}/libgsturidownloader-%{majorminor}.so.*
-%if 0%{?fedora}
+%if 0%{?fedora} >= 29
 %{_libdir}/libgstwayland-%{majorminor}.so.*
 %endif
 %{_libdir}/girepository-1.0/GstInsertBin-1.0.typelib
@@ -478,7 +478,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstsoundtouch.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsrtp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstttmlsubs.so
-%if 0%{?fedora}
+%if 0%{?fedora} >= 29
 %{_libdir}/gstreamer-%{majorminor}/libgstwaylandsink.so
 %endif
 %{_libdir}/gstreamer-%{majorminor}/libgstwebp.so
@@ -539,7 +539,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstPlayer-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
 
-/usr/lib64/libgstsctp-1.0.so
+%{_libdir}/libgstsctp-1.0.so
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so
 %{_libdir}/libgstbadaudio-%{majorminor}.so
@@ -550,9 +550,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstplayer-%{majorminor}.so
 %{_libdir}/libgstphotography-%{majorminor}.so
 %{_libdir}/libgsturidownloader-%{majorminor}.so
-%if 0%{?fedora}
-%{_libdir}/libgstwayland-%{majorminor}.so
-%endif
 %{_libdir}/gstreamer-%{majorminor}/libgstaudiolatency.so
 %{_libdir}/gstreamer-%{majorminor}/libgstipcpipeline.so
 %{_libdir}/gstreamer-%{majorminor}/libgstproxy.so
