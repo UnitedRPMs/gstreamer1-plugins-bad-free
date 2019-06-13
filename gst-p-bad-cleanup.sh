@@ -41,6 +41,7 @@ dccp
 debugutils
 dtmf
 faceoverlay
+fdkaac
 festival
 fieldanalysis
 freeverb

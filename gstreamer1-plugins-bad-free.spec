@@ -8,9 +8,14 @@
 %bcond_with extras
 %endif
 
+%bcond_with libfdk-aac
+# We need to test it
+#Please read here https://bugzilla.redhat.com/show_bug.cgi?id=1501522
+
+
 Name:           gstreamer1-plugins-bad-free
 Version:        1.16.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -95,7 +100,10 @@ BuildRequires:  OpenEXR-devel
 %endif
 BuildRequires:	chrpath
 BuildRequires:	make
-
+# For libfdk-aac
+%if %{without libfdk-aac}
+BuildRequires: fdk-aac-free-devel
+%endif
 
 %description
 GStreamer is a streaming media framework, based on graphs of elements which
@@ -214,6 +222,7 @@ make %{?_smp_mflags} V=0
 %install
 make install DESTDIR=%{buildroot}/
 
+
 # Register as an AppStream component to be visible in the software center
 #
 # NOTE: It would be *awesome* if this file was maintained by the upstream
@@ -297,7 +306,7 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.
 # It is provided by freeworld, we don't need it here
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvdspu.so 
-rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so 
+#rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenh264.so
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstqmlgl.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsiren.so 
@@ -483,6 +492,10 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %endif
 %{_libdir}/gstreamer-%{majorminor}/libgstwebp.so
 
+%if %{without libfdk-aac}
+%{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so
+%endif
+
 #debugging plugin
 %{_libdir}/gstreamer-%{majorminor}/libgstdebugutilsbad.so
 
@@ -557,6 +570,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstisoff-1.0.so.0
 %{_libdir}/libgstwebrtc-1.0.so
 %{_libdir}/libgstwebrtc-1.0.so.0
+%{_libdir}/libgstwayland-1.0.so
 
 %{_includedir}/gstreamer-%{majorminor}/gst/basecamerabinsrc
 %{_includedir}/gstreamer-%{majorminor}/gst/codecparsers
@@ -588,6 +602,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 /usr/lib64/pkgconfig/gstreamer-sctp-1.0.pc
 
 %changelog
+
+* Thu Jun 13 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.0-8
+- Enabled fdk-aac-free
 
 * Fri Apr 19 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.0-7
 - Updated to 1.16.0
