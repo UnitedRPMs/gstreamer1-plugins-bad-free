@@ -1,5 +1,6 @@
 %global         majorminor 1.0
 %global         _gobject_introspection  1.31.1
+%global extdirs ext/aom
 
 # Turn of extras package on RHEL.
 %if ! 0%{?rhel}
@@ -15,7 +16,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.16.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -104,6 +105,9 @@ BuildRequires:	make
 %if %{without libfdk-aac}
 BuildRequires: fdk-aac-free-devel
 %endif
+
+# For aom (av1)
+BuildRequires: libaom-devel
 
 %description
 GStreamer is a streaming media framework, based on graphs of elements which
@@ -206,7 +210,7 @@ aren't tested well enough, or the code is not of good enough quality.
     --with-package-name="Fedora GStreamer-plugins-bad package" \
     --with-package-origin="http://download.fedoraproject.org" \
     %{!?with_extras:--disable-fbdev --disable-decklink --disable-linsys} \
-    --enable-debug --disable-static --enable-gtk-doc --enable-experimental \
+    --enable-debug --disable-static --enable-gtk-doc --enable-experimental --enable-aom \
     --disable-dts --disable-faac --disable-faad --disable-nas \
     --disable-mimic --disable-libmms --disable-mpeg2enc --disable-mplex \
     --disable-neon --disable-rtmp --disable-xvid \
@@ -217,7 +221,6 @@ aren't tested well enough, or the code is not of good enough quality.
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
  
 make %{?_smp_mflags} V=0
-
 
 %install
 make install DESTDIR=%{buildroot}/
@@ -497,6 +500,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so
 %endif
 
+%{_libdir}/gstreamer-%{majorminor}/libgstaom.so
+
 #debugging plugin
 %{_libdir}/gstreamer-%{majorminor}/libgstdebugutilsbad.so
 
@@ -604,7 +609,10 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 %changelog
 
-* Wed Sep 02 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.1-7
+* Mon Oct 21 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.1-8
+- Enabled av1 
+
+* Mon Sep 02 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.1-7
 - Updated to 1.16.1
 
 * Thu Jun 13 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.0-8
