@@ -15,8 +15,8 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.16.1
-Release:        8%{?dist}
+Version:        1.16.2
+Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -411,7 +411,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstclosedcaption.so
 %{_libdir}/libgstsctp-1.0.so.0
 ##{_libdir}/libgstsctp-1.0.so.0.0.0
-%{_libdir}/libgstsctp-1.0.so.0.1601.0
+%{_libdir}/libgstsctp-1.0.so.0.1602.0
 # Now in gstreamer1-plugins-base
 #{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
 #
@@ -608,6 +608,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 /usr/lib64/pkgconfig/gstreamer-sctp-1.0.pc
 
 %changelog
+
+* Wed Dec 04 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.2-7
+- Updated to 1.16.2
 
 * Mon Oct 21 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.1-8
 - Enabled av1 
