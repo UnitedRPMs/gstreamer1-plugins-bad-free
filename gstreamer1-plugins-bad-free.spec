@@ -16,7 +16,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.16.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -608,6 +608,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 /usr/lib64/pkgconfig/gstreamer-sctp-1.0.pc
 
 %changelog
+
+* Fri Mar 20 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.2-8
+- Rebuilt
 
 * Wed Dec 04 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.2-7
 - Updated to 1.16.2
