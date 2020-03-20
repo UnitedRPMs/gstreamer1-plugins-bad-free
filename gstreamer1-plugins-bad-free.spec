@@ -13,6 +13,8 @@
 # We need to test it
 #Please read here https://bugzilla.redhat.com/show_bug.cgi?id=1501522
 
+%define _legacy_common_support 1
+
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.16.2
@@ -24,6 +26,15 @@ URL:            http://gstreamer.freedesktop.org/
 
 Source0:        http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.xz
 Source1:        gst-p-bad-cleanup.sh
+
+# https://gitlab.freedesktop.org/gstreamer/common/-/merge_requests/4
+# https://bugzilla.redhat.com/show_bug.cgi?id=1799497
+Patch0:         gstreamer1-plugins-bad-build-adapt-to-backwards-incompatible-change.patch
+ 
+# https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/merge_requests/1125
+# https://bugzilla.redhat.com/show_bug.cgi?id=1799497
+Patch1:         gstreamer1-plugins-bad-lv2-make-it-build-with-fno-common.patch
+
 
 BuildRequires:  gstreamer1-devel >= %{version}
 BuildRequires:  gstreamer1-plugins-base-devel >= %{version}
@@ -204,6 +215,11 @@ aren't tested well enough, or the code is not of good enough quality.
 %{S:1} %{S:0}
 
 %setup -T -D -n gst-plugins-bad-%{version}
+
+%if 0%{?fedora} >= 32
+%patch0 -p1
+%patch1 -p1
+%endif
 
 %build
 %configure --disable-fatal-warnings \
