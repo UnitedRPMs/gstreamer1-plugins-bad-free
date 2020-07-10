@@ -197,10 +197,10 @@ if test "x$unknown" != "x"; then
   exit 1
 fi
 
-autoreconf
+#autoreconf
 
 popd > /dev/null
 
-tar cJf $NEW_SOURCE $DIRECTORY
+tar xJf $NEW_SOURCE $DIRECTORY
 echo "$NEW_SOURCE is ready to use"
 

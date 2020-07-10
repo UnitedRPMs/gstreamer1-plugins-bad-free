@@ -2,23 +2,23 @@
 %global         _gobject_introspection  1.31.1
 %global extdirs ext/aom
 
-# Turn of extras package on RHEL.
-%if ! 0%{?rhel}
+%bcond_with libfdk-aac
+# We need to test it
+#Please read here https://bugzilla.redhat.com/show_bug.cgi?id=1501522
+
+# Only have extras package on fedora
+%if 0%{?fedora}
 %bcond_without extras
 %else
 %bcond_with extras
 %endif
-
-%bcond_with libfdk-aac
-# We need to test it
-#Please read here https://bugzilla.redhat.com/show_bug.cgi?id=1501522
 
 %define _legacy_common_support 1
 
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.16.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -35,25 +35,31 @@ Patch0:         gstreamer1-plugins-bad-build-adapt-to-backwards-incompatible-cha
 # https://bugzilla.redhat.com/show_bug.cgi?id=1799497
 Patch1:         gstreamer1-plugins-bad-lv2-make-it-build-with-fno-common.patch
 
+Patch2:	gst-plugins-bad-1.16.2-make43.patch
 
+
+BuildRequires:  gcc-c++
 BuildRequires:  gstreamer1-devel >= %{version}
 BuildRequires:  gstreamer1-plugins-base-devel >= %{version}
+
 BuildRequires:  check
 BuildRequires:  gettext-devel
 BuildRequires:  libXt-devel
-BuildRequires:  gtk-doc
 BuildRequires:  gobject-introspection-devel >= %{_gobject_introspection}
+
 BuildRequires:  bzip2-devel
 BuildRequires:  exempi-devel
+%if 0%{?fedora} >= 31 || 0%{?rhel} >= 9
+BuildRequires:  fdk-aac-free-devel
+%endif
 BuildRequires:  gsm-devel
 BuildRequires:  jasper-devel
 BuildRequires:  ladspa-devel
 BuildRequires:  lcms2-devel
 BuildRequires:  libdvdnav-devel
 BuildRequires:  libexif-devel
-BuildRequires:  libiptcdata-devel
 BuildRequires:  libmpcdec-devel
-BuildRequires:  liboil-devel
+BuildRequires:  libnice-devel
 BuildRequires:  librsvg2-devel
 BuildRequires:  libsndfile-devel
 BuildRequires:  mesa-libGL-devel
@@ -67,7 +73,7 @@ BuildRequires:  opus-devel
 BuildRequires:  nettle-devel
 BuildRequires:  libgcrypt-devel
 %if 0%{?fedora} || 0%{?rhel} > 7
-BuildRequires:  libwayland-client-devel wayland-devel
+BuildRequires:  wayland-devel
 %endif
 BuildRequires:  gnutls-devel
 BuildRequires:  libsrtp-devel
@@ -76,10 +82,23 @@ BuildRequires:  pkgconfig(libusb-1.0)
 BuildRequires:  gtk3-devel >= 3.4
 BuildRequires:  bluez-libs-devel >= 5.0
 BuildRequires:  libwebp-devel
-BuildRequires:  mesa-libEGL-devel
+#BuildRequires:  mesa-libEGL-devel
 #BuildRequires:  vulkan-devel
 #BuildRequires:  mesa-vulkan-devel
 BuildRequires:  webrtc-audio-processing-devel
+BuildRequires:  libaom-devel
+BuildRequires:  libmicrodns-devel
+BuildRequires:  libopenmpt-devel
+BuildRequires:  srt-devel
+%if 0
+BuildRequires:  wpewebkit-devel
+BuildRequires:  wpebackend-fdo-devel
+%endif
+BuildRequires:  glslc
+BuildRequires:  libdrm-devel
+BuildRequires:  liblrdf-devel
+BuildRequires:  zvbi-devel
+
 %if %{with extras}
 BuildRequires:  libbs2b-devel >= 3.1.0
 ## Plugins not ported
@@ -91,6 +110,8 @@ BuildRequires:  libchromaprint-devel
 ## Plugin not ported
 #BuildRequires:  libcdaudio-devel
 BuildRequires:  libcurl-devel
+BuildRequires:  libssh2-devel
+BuildRequires:  libxml2-devel
 BuildRequires:  game-music-emu-devel
 BuildRequires:  libkate-devel
 BuildRequires:  libmodplug-devel
@@ -99,26 +120,46 @@ BuildRequires:  libofa-devel
 #BuildRequires:  libmusicbrainz-devel
 #BuildRequires:  libtimidity-devel
 BuildRequires:  libvdpau-devel
+BuildRequires:  pkgconfig(libva-drm)
+BuildRequires:  pkgconfig(x11)
+BuildRequires:  pkgconfig(egl)
+BuildRequires:  pkgconfig(gl)
+BuildRequires:  pkgconfig(glesv1_cm)
+BuildRequires:  pkgconfig(glesv2)
+BuildRequires:  libXext-devel
 BuildRequires:  openal-soft-devel
 #BuildRequires:  opencv-devel
-BuildRequires:  openjpeg-devel
+BuildRequires:  openjpeg2-devel
+BuildRequires:  pkgconfig(spandsp) >= 0.0.6
 ## Plugins not ported
 #BuildRequires:  SDL-devel
-#BuildRequires:  slv2-devel
+BuildRequires:  lilv-devel
 BuildRequires:  wildmidi-devel
 BuildRequires:  zbar-devel
-BuildRequires:  zvbi-devel
 BuildRequires:  OpenEXR-devel
 %endif
+
+# libgstfdkaac.so used to be shipped in -nonfree
+Obsoletes: gstreamer1-plugins-bad-nonfree < 1.16.1-2
+
+BuildRequires:  gtk-doc
 BuildRequires:	chrpath
-BuildRequires:	make
+BuildRequires:	make tar xz
 # For libfdk-aac
 %if %{without libfdk-aac}
 BuildRequires: fdk-aac-free-devel
 %endif
 
 # For aom (av1)
-BuildRequires: libaom-devel
+%if 0%{?fedora} >= 33
+BuildRequires:  libaom-devel >= 2.0.0
+%else
+BuildRequires:  libaom-devel
+%endif 
+
+# New
+BuildRequires: meson
+BuildRequires: cmake
 
 %description
 GStreamer is a streaming media framework, based on graphs of elements which
@@ -162,6 +203,17 @@ extra "bad" plugins for sources (mythtv), sinks (fbdev) and
 effects (pitch) which are not used very much and require additional
 libraries to be installed.
 
+%package zbar	
+Summary:         GStreamer "bad" plugins zbar plugin	
+Requires:        %{name}%{?_isa} = %{version}-%{release}
+		
+%description zbar
+GStreamer is a streaming media framework, based on graphs of elements which	
+operate on media data.
+gstreamer-plugins-bad contains plug-ins that aren't tested well enough,	
+or the code is not of good enough quality.
+This package (%{name}-zbar) contains the zbar
+plugin which allows decode bar codes.
 
 %package fluidsynth
 Summary:         GStreamer "bad" plugins fluidsynth plugin
@@ -213,33 +265,19 @@ aren't tested well enough, or the code is not of good enough quality.
 # Process a gst-plugins-bad tarball to remove
 # unwanted GStreamer plugins.
 %{S:1} %{S:0}
+%setup -T -D -n gst-plugins-bad-1.16.2
 
-%setup -T -D -n gst-plugins-bad-%{version}
 
-%if 0%{?fedora} >= 32
-%patch0 -p1
-%patch1 -p1
-%endif
 
 %build
-%configure --disable-fatal-warnings \
-    --with-package-name="Fedora GStreamer-plugins-bad package" \
-    --with-package-origin="http://download.fedoraproject.org" \
-    %{!?with_extras:--disable-fbdev --disable-decklink --disable-linsys} \
-    --enable-debug --disable-static --enable-gtk-doc --enable-experimental --enable-aom \
-    --disable-dts --disable-faac --disable-faad --disable-nas \
-    --disable-mimic --disable-libmms --disable-mpeg2enc --disable-mplex \
-    --disable-neon --disable-rtmp --disable-xvid \
-    --disable-flite --disable-mpg123 --disable-sbc --disable-opencv \
-    --disable-spandsp --disable-voamrwbenc --disable-x265 --disable-vulkan  
+#CFLAGS+=' -fcommon'
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=655517
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
- 
-make %{?_smp_mflags} V=0
+%meson -D package-name="Fedora GStreamer-plugins-bad package" -D package-origin="http://download.fedoraproject.org" -D opencv=disabled -D msdk=disabled -D faac=disabled -D faad=disabled -D libmms=disabled -D mpeg2enc=disabled -D mplex=disabled -D neon=disabled -D rtmp=disabled -D flite=disabled -D sbc=disabled -D voamrwbenc=disabled -D x265=disabled -D dvdspu=disabled -D siren=disabled -D real=disabled -D opensles=disabled -D tinyalsa=disabled -D wasapi=disabled -D wasapi2=disabled -D avtp=disabled -D dc1394=disabled -D directfb=disabled -D iqa=disabled -D libde265=disabled -D musepack=disabled -D openni2=disabled -D sctp=disabled -D svthevcenc=disabled -D voaacenc=disabled -D zxing=disabled -D wpe=disabled -D openh264=disabled -D x265=disabled -D mpg123=disabled -D nvdec=disabled -D nvenc=disabled -D ssh2=disabled -D dts=disabled -D xvid=disabled -D mimic=disabled -D nas=disabled -D dvbsuboverlay=disabled -D uvch264=enabled -D hls-crypto=openssl -D doc=disabled -D vulkan=disabled -D srt=enabled -D openmpt=enabled -D lv2=enabled -D va=enabled -D spandsp=enabled -D openal=enabled -D vdpau=enabled
+
+%meson_build 
 
 %install
-make install DESTDIR=%{buildroot}/
+%meson_install 
 
 
 # Register as an AppStream component to be visible in the software center
@@ -299,6 +337,10 @@ ln -sf %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so %{buildroot}/%{_lib
 ln -sf %{_libdir}/gstreamer-%{majorminor}/libgstgtk.so %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so 
 
 %find_lang gst-plugins-bad-%{majorminor}
+
+# unpackaged files
+rm $RPM_BUILD_ROOT%{_bindir}/playout
+
 find %{buildroot}/ -name '*.la' -exec rm -f {} ';'
 # Kill rpath
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
@@ -312,8 +354,8 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstmpegtsmux
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstmxf.so
 #chrpath --delete {buildroot}/{_libdir}/gstreamer-{majorminor}/libgstopengl.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstsmoothstreaming.so
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstuvch264.so
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstvdpau.so
+##chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstuvch264.so
+##chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstvdpau.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstvideoparsersbad.so
 #chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstwaylandsink.so
 chrpath --delete %{buildroot}/%{_libdir}/libgstadaptivedemux-%{majorminor}.so
@@ -323,7 +365,7 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.
 
 
 # It is provided by freeworld, we don't need it here
-rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
+#rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvdspu.so 
 #rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so 
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenh264.so
@@ -479,9 +521,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstsubenc.so
 %{_libdir}/gstreamer-%{majorminor}/libgsttimecode.so
 %{_libdir}/gstreamer-%{majorminor}/libgstuvch264.so
-%if %{with extras}
-%{_libdir}/gstreamer-%{majorminor}/libgstvdpau.so
-%endif
+# obsolete
+#{_libdir}/gstreamer-#{majorminor}/libgstvdpau.so
+#
 %{_libdir}/gstreamer-%{majorminor}/libgstvideofiltersbad.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvideoframe_audiolevel.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvideoparsersbad.so
@@ -500,23 +542,28 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgsthls.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgsm.so
 %{_libdir}/gstreamer-%{majorminor}/libgstladspa.so
+%{_libdir}/gstreamer-%{majorminor}/libgstopenmpt.so
 #{_libdir}/gstreamer-%{majorminor}/libgstmusepack.so
 %{_libdir}/gstreamer-%{majorminor}/libgstkms.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopusparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsndfile.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsoundtouch.so
+%{_libdir}/gstreamer-%{majorminor}/libgstsrt.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsrtp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstttmlsubs.so
+%{_libdir}/gstreamer-%{majorminor}/libgstlv2.so
 %if 0%{?fedora} >= 29
 %{_libdir}/gstreamer-%{majorminor}/libgstwaylandsink.so
 %endif
 %{_libdir}/gstreamer-%{majorminor}/libgstwebp.so
+%{_libdir}/gstreamer-%{majorminor}/libgstwebrtc.so
 
 %if %{without libfdk-aac}
 %{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so
 %endif
 
 %{_libdir}/gstreamer-%{majorminor}/libgstaom.so
+%{_libdir}/gstreamer-%{majorminor}/libgstbluez.so
 
 #debugging plugin
 %{_libdir}/gstreamer-%{majorminor}/libgstdebugutilsbad.so
@@ -536,7 +583,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %files extras
 # Plugins with external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstassrender.so
-%{_libdir}/gstreamer-%{majorminor}/libgstbluez.so
 %{_libdir}/gstreamer-%{majorminor}/libgstbs2b.so
 %{_libdir}/gstreamer-%{majorminor}/libgstchromaprint.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcurl.so
@@ -548,11 +594,16 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstopenal.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenexr.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
-%{_libdir}/gstreamer-%{majorminor}/libgstzbar.so
+%{_libdir}/gstreamer-%{majorminor}/libgstspandsp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstteletext.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcolormanagement.so
 #{_libdir}/gstreamer-%{majorminor}/libgstopenglmixers.so
+%{_libdir}/gstreamer-%{majorminor}/libgstvdpau.so
 %{_libdir}/gstreamer-%{majorminor}/libgstwebrtcdsp.so
+
+%files zbar
+# Plugins with external dependencies
+%{_libdir}/gstreamer-%{majorminor}/libgstzbar.so
 
 
 %files fluidsynth
@@ -566,8 +617,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %files devel
-%doc %{_datadir}/gtk-doc/html/gst-plugins-bad-plugins-%{majorminor}
-%doc %{_datadir}/gtk-doc/html/gst-plugins-bad-libs-%{majorminor}
+%doc AUTHORS NEWS README RELEASE REQUIREMENTS
+# %{_datadir}/gtk-doc/html/gst-plugins-bad-plugins-%{majorminor}
+# %{_datadir}/gtk-doc/html/gst-plugins-bad-libs-%{majorminor}
 
 %{_datadir}/gir-1.0/GstInsertBin-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstMpegts-%{majorminor}.gir
@@ -624,6 +676,10 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 /usr/lib64/pkgconfig/gstreamer-sctp-1.0.pc
 
 %changelog
+
+* Wed Jul 08 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.2-9
+- Rebuilt for aom
+- Changed to meson
 
 * Fri Mar 20 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.2-8
 - Rebuilt
@@ -789,9 +845,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 - add chromaprint plugin
 
 * Thu Feb 04 2016 Ralf Corsépius <corsepiu@fedoraproject.org> - 1.7.1-4
-- Append --disable-fatal-warnings to %%configure to prevent
+- Append -Dfatal-warnings to %%configure to prevent
   building from aborting for negligible warnings (Fix F24FTBFS)
-- Append --disable-silent-rules to %%configure to make
+- Append -Dsilent-rules to %%configure to make
   building verbose.
 - Don't remove buildroot before installing.
 
