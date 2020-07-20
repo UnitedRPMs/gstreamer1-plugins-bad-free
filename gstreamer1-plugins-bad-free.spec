@@ -17,8 +17,8 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.16.2
-Release:        9%{?dist}
+Version:        1.17.2
+Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -83,7 +83,7 @@ BuildRequires:  gtk3-devel >= 3.4
 BuildRequires:  bluez-libs-devel >= 5.0
 BuildRequires:  libwebp-devel
 #BuildRequires:  mesa-libEGL-devel
-#BuildRequires:  vulkan-devel
+BuildRequires:  vulkan-devel
 #BuildRequires:  mesa-vulkan-devel
 BuildRequires:  webrtc-audio-processing-devel
 BuildRequires:  libaom-devel
@@ -128,7 +128,7 @@ BuildRequires:  pkgconfig(glesv1_cm)
 BuildRequires:  pkgconfig(glesv2)
 BuildRequires:  libXext-devel
 BuildRequires:  openal-soft-devel
-#BuildRequires:  opencv-devel
+BuildRequires:  opencv-devel
 BuildRequires:  openjpeg2-devel
 BuildRequires:  pkgconfig(spandsp) >= 0.0.6
 ## Plugins not ported
@@ -160,6 +160,8 @@ BuildRequires:  libaom-devel
 # New
 BuildRequires: meson
 BuildRequires: cmake
+BuildRequires: libltc-devel
+BuildRequires: game-music-emu-devel
 
 %description
 GStreamer is a streaming media framework, based on graphs of elements which
@@ -265,14 +267,33 @@ aren't tested well enough, or the code is not of good enough quality.
 # Process a gst-plugins-bad tarball to remove
 # unwanted GStreamer plugins.
 %{S:1} %{S:0}
-%setup -T -D -n gst-plugins-bad-1.16.2
+%setup -T -D -n gst-plugins-bad-%{version}
 
 
 
 %build
 #CFLAGS+=' -fcommon'
 
-%meson -D package-name="Fedora GStreamer-plugins-bad package" -D package-origin="http://download.fedoraproject.org" -D opencv=disabled -D msdk=disabled -D faac=disabled -D faad=disabled -D libmms=disabled -D mpeg2enc=disabled -D mplex=disabled -D neon=disabled -D rtmp=disabled -D flite=disabled -D sbc=disabled -D voamrwbenc=disabled -D x265=disabled -D dvdspu=disabled -D siren=disabled -D real=disabled -D opensles=disabled -D tinyalsa=disabled -D wasapi=disabled -D wasapi2=disabled -D avtp=disabled -D dc1394=disabled -D directfb=disabled -D iqa=disabled -D libde265=disabled -D musepack=disabled -D openni2=disabled -D sctp=disabled -D svthevcenc=disabled -D voaacenc=disabled -D zxing=disabled -D wpe=disabled -D openh264=disabled -D x265=disabled -D mpg123=disabled -D nvdec=disabled -D nvenc=disabled -D ssh2=disabled -D dts=disabled -D xvid=disabled -D mimic=disabled -D nas=disabled -D dvbsuboverlay=disabled -D uvch264=enabled -D hls-crypto=openssl -D doc=disabled -D vulkan=disabled -D srt=enabled -D openmpt=enabled -D lv2=enabled -D va=enabled -D spandsp=enabled -D openal=enabled -D vdpau=enabled
+%meson \
+    -D package-name="Fedora GStreamer-plugins-bad package" \
+    -D package-origin="http://download.fedoraproject.org" \
+    -D doc=disabled -D magicleap=disabled -D msdk=disabled \
+    -D dts=disabled -D faac=disabled -D faad=disabled \
+    -D libmms=disabled -D mpeg2enc=disabled -D mplex=disabled \
+    -D neon=disabled -D rtmp=disabled -D rtmp2=disabled \
+    -D flite=disabled -D sbc=disabled -D opencv=enabled \
+    -D voamrwbenc=disabled -D x265=disabled \
+    -D dvbsuboverlay=disabled -D dvdspu=disabled -D siren=disabled \
+    -D real=disabled -D opensles=disabled -D tinyalsa=disabled \
+    -D wasapi=disabled -D wasapi2=disabled -D avtp=disabled \
+    -D dc1394=disabled -D directfb=disabled -D iqa=disabled \
+    -D libde265=disabled -D musepack=disabled -D openni2=disabled \
+    -D sctp=disabled -D svthevcenc=disabled -D voaacenc=disabled \
+    -D zxing=disabled -D wpe=disabled -D x11=disabled \
+    -D openh264=disabled -D srt=enabled -D openmpt=enabled \
+    -D lv2=enabled -D va=enabled -D spandsp=enabled \
+    -D openal=enabled -D vdpau=disabled -D uvch264=enabled \
+    -D ltc=enabled -D gme=enabled
 
 %meson_build 
 
@@ -287,8 +308,15 @@ aren't tested well enough, or the code is not of good enough quality.
 #
 # See http://www.freedesktop.org/software/appstream/docs/ for more details.
 #
-mkdir -p %{buildroot}/%{_datadir}/appdata
-cat > %{buildroot}/%{_datadir}/appdata/gstreamer-bad-free.appdata.xml <<EOF
+# Register as an AppStream component to be visible in the software center
+#
+# NOTE: It would be *awesome* if this file was maintained by the upstream
+# project, translated and installed into the right place during `make install`.
+#
+# See http://www.freedesktop.org/software/appstream/docs/ for more details.
+#
+mkdir -p $RPM_BUILD_ROOT%{_metainfodir}
+cat > $RPM_BUILD_ROOT%{_metainfodir}/gstreamer-bad-free.appdata.xml <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2013 Richard Hughes <richard@hughsie.com> -->
 <component type="codec">
@@ -345,7 +373,7 @@ find %{buildroot}/ -name '*.la' -exec rm -f {} ';'
 # Kill rpath
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
-chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
+# chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvb.so
 # chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgsthls.so
@@ -418,37 +446,56 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %files -f gst-plugins-bad-%{majorminor}.lang
 %license COPYING COPYING.LIB
 %doc AUTHORS README REQUIREMENTS
-
-%{_datadir}/appdata/*.appdata.xml
-
+ 
+%{_metainfodir}/*.appdata.xml
+%{_bindir}/gst-transcoder-%{majorminor}
+ 
 # presets
 %dir %{_datadir}/gstreamer-%{majorminor}/presets/
 %{_datadir}/gstreamer-%{majorminor}/presets/GstFreeverb.prs
-
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/device/dvd.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/avi.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/flv.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/mkv.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/mp3.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/mp4.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/oga.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/ogv.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/webm.gep
+%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/online-services/youtube.gep
+ 
 # opencv data
-#dir {_datadir}/gst-plugins-bad/{majorminor}/opencv_haarcascades/
-#{_datadir}/gst-plugins-bad/{majorminor}/opencv_haarcascades/fist.xml
-#{_datadir}/gst-plugins-bad/{majorminor}/opencv_haarcascades/palm.xml
-
+#{_datadir}/gst-plugins-bad/%{majorminor}/opencv_haarcascades/
+ 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so.*
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so.*
 %{_libdir}/libgstbadaudio-%{majorminor}.so.*
-#{_libdir}/libgstbadvideo-%{majorminor}.so.*
 %{_libdir}/libgstcodecparsers-%{majorminor}.so.*
+%{_libdir}/libgstcodecs-%{majorminor}.so.*
 %{_libdir}/libgstinsertbin-%{majorminor}.so.*
+%{_libdir}/libgstisoff-%{majorminor}.so.*
 %{_libdir}/libgstmpegts-%{majorminor}.so.*
 %{_libdir}/libgstplayer-%{majorminor}.so.*
 %{_libdir}/libgstphotography-%{majorminor}.so.*
+%{_libdir}/libgstsctp-%{majorminor}.so.*
+%{_libdir}/libgsttranscoder-%{majorminor}.so.*
 %{_libdir}/libgsturidownloader-%{majorminor}.so.*
-%if 0%{?fedora} >= 29
+%{_libdir}/libgstvulkan-%{majorminor}.so.*
+%{_libdir}/libgstwebrtc-%{majorminor}.so.*
+%if 0%{?fedora} || 0%{?rhel} > 7
 %{_libdir}/libgstwayland-%{majorminor}.so.*
 %endif
+%{_libdir}/libgstopencv-%{majorminor}.so.*
+
+	
+%{_libdir}/girepository-1.0/GstBadAudio-1.0.typelib
+%{_libdir}/girepository-1.0/GstCodecs-1.0.typelib
 %{_libdir}/girepository-1.0/GstInsertBin-1.0.typelib
 %{_libdir}/girepository-1.0/GstMpegts-1.0.typelib
 %{_libdir}/girepository-1.0/GstPlayer-1.0.typelib
+%{_libdir}/girepository-1.0/GstTranscoder-1.0.typelib
+%{_libdir}/girepository-1.0/GstVulkan-1.0.typelib
 %{_libdir}/girepository-1.0/GstWebRTC-1.0.typelib
-%{_libdir}/libgstisoff-1.0.so.0.*.0
-%{_libdir}/libgstwebrtc-1.0.so.0.*.0
 
 # Plugins without external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstaccurip.so
@@ -458,25 +505,23 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstasfmux.so
 %{_libdir}/gstreamer-%{majorminor}/libgstaudiobuffersplit.so
 %{_libdir}/gstreamer-%{majorminor}/libgstaudiofxbad.so
+%{_libdir}/gstreamer-%{majorminor}/libgstaudiolatency.so
 %{_libdir}/gstreamer-%{majorminor}/libgstaudiomixmatrix.so
 %{_libdir}/gstreamer-%{majorminor}/libgstaudiovisualizers.so
 %{_libdir}/gstreamer-%{majorminor}/libgstautoconvert.so
 %{_libdir}/gstreamer-%{majorminor}/libgstbayer.so
-%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
+%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcoloreffects.so
-
-%{_libdir}/gstreamer-%{majorminor}/libgstclosedcaption.so
-%{_libdir}/libgstsctp-1.0.so.0
-##{_libdir}/libgstsctp-1.0.so.0.0.0
-%{_libdir}/libgstsctp-1.0.so.0.1602.0
-# Now in gstreamer1-plugins-base
-#{_libdir}/gstreamer-%{majorminor}/libgstcompositor.so
-#
-%{_libdir}/gstreamer-%{majorminor}/libgstdashdemux.so
+%{_libdir}/gstreamer-%{majorminor}/libgstdash.so
+%{_libdir}/gstreamer-%{majorminor}/libgstdvbsubenc.so
 %{_libdir}/gstreamer-%{majorminor}/libgstfaceoverlay.so
 %if %{with extras}
 %{_libdir}/gstreamer-%{majorminor}/libgstfbdevsink.so
+%endif
+ 
+%if 0%{?fedora} >= 31 || 0%{?rhel} >= 9
+%{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so
 %endif
 %{_libdir}/gstreamer-%{majorminor}/libgstfestival.so
 %{_libdir}/gstreamer-%{majorminor}/libgstfieldanalysis.so
@@ -485,7 +530,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstgaudieffects.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgdp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgeometrictransform.so
+%{_libdir}/gstreamer-%{majorminor}/libgstlegacyrawparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstid3tag.so
+%{_libdir}/gstreamer-%{majorminor}/libgstipcpipeline.so
 %{_libdir}/gstreamer-%{majorminor}/libgstinter.so
 %{_libdir}/gstreamer-%{majorminor}/libgstinterlace.so
 %{_libdir}/gstreamer-%{majorminor}/libgstivfparse.so
@@ -501,15 +548,12 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstnetsim.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpcapparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstpnm.so
-# We need check if vulkan is provided by other gstreamer 
-#{_libdir}/gstreamer-#{majorminor}/libgstvulkan.so
-# libgstrawparse.so is provided by gstreamer1-plugins-base
-#exclude {_libdir}/gstreamer-{majorminor}/libgstrawparse.so
-%{_libdir}/gstreamer-%{majorminor}/libgstlegacyrawparse.so
+%{_libdir}/gstreamer-%{majorminor}/libgstproxy.so
 %{_libdir}/gstreamer-%{majorminor}/libgstremovesilence.so
 %{_libdir}/gstreamer-%{majorminor}/libgstresindvd.so
 %{_libdir}/gstreamer-%{majorminor}/libgstrfbsrc.so
 %{_libdir}/gstreamer-%{majorminor}/libgstrsvg.so
+%{_libdir}/gstreamer-%{majorminor}/libgstrtpmanagerbad.so
 %{_libdir}/gstreamer-%{majorminor}/libgstrtponvif.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsdpelem.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsegmentclip.so
@@ -517,57 +561,63 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstsmooth.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsmoothstreaming.so
 %{_libdir}/gstreamer-%{majorminor}/libgstspeed.so
-#{_libdir}/gstreamer-%{majorminor}/libgststereo.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsubenc.so
+%{_libdir}/gstreamer-%{majorminor}/libgstswitchbin.so
 %{_libdir}/gstreamer-%{majorminor}/libgsttimecode.so
+%{_libdir}/gstreamer-%{majorminor}/libgsttranscode.so
 %{_libdir}/gstreamer-%{majorminor}/libgstuvch264.so
-# obsolete
-#{_libdir}/gstreamer-#{majorminor}/libgstvdpau.so
-#
 %{_libdir}/gstreamer-%{majorminor}/libgstvideofiltersbad.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvideoframe_audiolevel.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvideoparsersbad.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvideosignal.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvmnc.so
-%{_libdir}/gstreamer-%{majorminor}/libgstyadif.so
 %{_libdir}/gstreamer-%{majorminor}/libgsty4mdec.so
-
+ 
 # System (Linux) specific plugins
 %{_libdir}/gstreamer-%{majorminor}/libgstdvb.so
-#{_libdir}/gstreamer-%{majorminor}/libgstvcdsrc.so
-
+%{_libdir}/gstreamer-%{majorminor}/libgstv4l2codecs.so
+ 
 # Plugins with external dependencies
+ 
+%{_libdir}/gstreamer-%{majorminor}/libgstaom.so
+%{_libdir}/gstreamer-%{majorminor}/libgstbluez.so
 %{_libdir}/gstreamer-%{majorminor}/libgstbz2.so
+%{_libdir}/gstreamer-%{majorminor}/libgstclosedcaption.so
+%{_libdir}/gstreamer-%{majorminor}/libgstcolormanagement.so
 %{_libdir}/gstreamer-%{majorminor}/libgstdtls.so
 %{_libdir}/gstreamer-%{majorminor}/libgsthls.so
 %{_libdir}/gstreamer-%{majorminor}/libgstgsm.so
-%{_libdir}/gstreamer-%{majorminor}/libgstladspa.so
-%{_libdir}/gstreamer-%{majorminor}/libgstopenmpt.so
-#{_libdir}/gstreamer-%{majorminor}/libgstmusepack.so
 %{_libdir}/gstreamer-%{majorminor}/libgstkms.so
+%{_libdir}/gstreamer-%{majorminor}/libgstladspa.so
+%{_libdir}/gstreamer-%{majorminor}/libgstmicrodns.so
+%{_libdir}/gstreamer-%{majorminor}/libgstnvcodec.so
+%{_libdir}/gstreamer-%{majorminor}/libgstopenmpt.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopusparse.so
+%{_libdir}/gstreamer-%{majorminor}/libgstrist.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsndfile.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsoundtouch.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsrt.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsrtp.so
-%{_libdir}/gstreamer-%{majorminor}/libgstttmlsubs.so
-%{_libdir}/gstreamer-%{majorminor}/libgstlv2.so
-%if 0%{?fedora} >= 29
+%{_libdir}/gstreamer-%{majorminor}/libgstvulkan.so
+%if 0%{?fedora} || 0%{?rhel} > 7
 %{_libdir}/gstreamer-%{majorminor}/libgstwaylandsink.so
 %endif
 %{_libdir}/gstreamer-%{majorminor}/libgstwebp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstwebrtc.so
-
-%if %{without libfdk-aac}
-%{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so
+%{_libdir}/gstreamer-%{majorminor}/libgstwebrtcdsp.so
+%if 0
+%{_libdir}/gstreamer-%{majorminor}/libgstwpe.so
 %endif
-
-%{_libdir}/gstreamer-%{majorminor}/libgstaom.so
-%{_libdir}/gstreamer-%{majorminor}/libgstbluez.so
-
+%if %{with extras}
+%{_libdir}/gstreamer-%{majorminor}/libgstlv2.so
+%{_libdir}/gstreamer-%{majorminor}/libgstttmlsubs.so
+%endif
+%if !%{with extras}
+%exclude %{_libdir}/gstreamer-%{majorminor}/libgstteletext.so
+%endif
+ 
 #debugging plugin
 %{_libdir}/gstreamer-%{majorminor}/libgstdebugutilsbad.so
-
 
 %files gtk
 # Plugins with external dependencies
@@ -576,10 +626,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 # https://github.com/GStreamer/gst-plugins-bad/commit/eb2dae8fd6aea04673fdd5b0fdf05e4e2ce1c2ee
 
 # Now gstreamer1-plugins-good has libgstgtk.so
-%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so
-
-
-%if %{with extras}
+%{_libdir}/gstreamer-%{majorminor}/libgstgtksink.so 
+ 
 %files extras
 # Plugins with external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstassrender.so
@@ -596,86 +644,92 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 %{_libdir}/gstreamer-%{majorminor}/libgstspandsp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstteletext.so
-%{_libdir}/gstreamer-%{majorminor}/libgstcolormanagement.so
-#{_libdir}/gstreamer-%{majorminor}/libgstopenglmixers.so
-%{_libdir}/gstreamer-%{majorminor}/libgstvdpau.so
-%{_libdir}/gstreamer-%{majorminor}/libgstwebrtcdsp.so
+%{_libdir}/gstreamer-%{majorminor}/libgstva.so
+%{_libdir}/gstreamer-%{majorminor}/libgstopencv.so
 
+ 
 %files zbar
 # Plugins with external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstzbar.so
-
-
+ 
 %files fluidsynth
 # Plugins with external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstfluidsynthmidi.so
-
+ 
 %files wildmidi
 # Plugins with external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstwildmidi.so
-%endif
 
 
+ 
 %files devel
-%doc AUTHORS NEWS README RELEASE REQUIREMENTS
-# %{_datadir}/gtk-doc/html/gst-plugins-bad-plugins-%{majorminor}
-# %{_datadir}/gtk-doc/html/gst-plugins-bad-libs-%{majorminor}
-
+ 
+%{_datadir}/gir-1.0/GstBadAudio-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstCodecs-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstInsertBin-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstMpegts-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstPlayer-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstTranscoder-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstVulkan-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
-
-%{_libdir}/libgstsctp-1.0.so
+ 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so
 %{_libdir}/libgstbadaudio-%{majorminor}.so
-#{_libdir}/libgstbadvideo-%{majorminor}.so
 %{_libdir}/libgstcodecparsers-%{majorminor}.so
+%{_libdir}/libgstcodecs-%{majorminor}.so
 %{_libdir}/libgstinsertbin-%{majorminor}.so
+%{_libdir}/libgstisoff-%{majorminor}.so
 %{_libdir}/libgstmpegts-%{majorminor}.so
 %{_libdir}/libgstplayer-%{majorminor}.so
 %{_libdir}/libgstphotography-%{majorminor}.so
+%{_libdir}/libgstsctp-%{majorminor}.so
+%{_libdir}/libgsttranscoder-%{majorminor}.so
 %{_libdir}/libgsturidownloader-%{majorminor}.so
-%{_libdir}/gstreamer-%{majorminor}/libgstaudiolatency.so
-%{_libdir}/gstreamer-%{majorminor}/libgstipcpipeline.so
-%{_libdir}/gstreamer-%{majorminor}/libgstproxy.so
-%{_libdir}/libgstisoff-1.0.so
-%{_libdir}/libgstisoff-1.0.so.0
-%{_libdir}/libgstwebrtc-1.0.so
-%{_libdir}/libgstwebrtc-1.0.so.0
-%{_libdir}/libgstwayland-1.0.so
-
+%{_libdir}/libgstvulkan-%{majorminor}.so
+%{_libdir}/libgstwebrtc-%{majorminor}.so
+%if 0%{?fedora} || 0%{?rhel} > 7
+%{_libdir}/libgstwayland-%{majorminor}.so
+%endif
+%{_libdir}/libgstopencv-%{majorminor}.so
+ 
+%{_includedir}/gstreamer-%{majorminor}/gst/audio
 %{_includedir}/gstreamer-%{majorminor}/gst/basecamerabinsrc
 %{_includedir}/gstreamer-%{majorminor}/gst/codecparsers
 %{_includedir}/gstreamer-%{majorminor}/gst/insertbin
 %{_includedir}/gstreamer-%{majorminor}/gst/interfaces/photography*
+%{_includedir}/gstreamer-%{majorminor}/gst/isoff/
 %{_includedir}/gstreamer-%{majorminor}/gst/mpegts
 %{_includedir}/gstreamer-%{majorminor}/gst/player
+%{_includedir}/gstreamer-%{majorminor}/gst/sctp
+%{_includedir}/gstreamer-%{majorminor}/gst/transcoder
 %{_includedir}/gstreamer-%{majorminor}/gst/uridownloader
-#{_includedir}/gstreamer-%{majorminor}/gst/video
-%{_includedir}/gstreamer-%{majorminor}/gst/isoff/gstisoff.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstnonstreamaudiodecoder.h
+%{_includedir}/gstreamer-%{majorminor}/gst/vulkan/
 %{_includedir}/gstreamer-%{majorminor}/gst/webrtc/
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-bad-prelude.h
+%{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvutils.h
+%{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvvideofilter.h
+%{_includedir}/gstreamer-%{majorminor}/gst/opencv/opencv-prelude.h
 
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstplanaraudioadapter.h
-%{_includedir}/gstreamer-%{majorminor}/gst/sctp/sctp-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/sctp/sctpreceivemeta.h
-%{_includedir}/gstreamer-%{majorminor}/gst/sctp/sctpsendmeta.h
-
+ 
 # pkg-config files
 %{_libdir}/pkgconfig/gstreamer-bad-audio-%{majorminor}.pc
-#{_libdir}/pkgconfig/gstreamer-bad-video-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-codecparsers-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-insertbin-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-mpegts-%{majorminor}.pc
+%{_libdir}/pkgconfig/gstreamer-photography-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-player-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-plugins-bad-%{majorminor}.pc
-%{_libdir}/pkgconfig/gstreamer-webrtc-1.0.pc
-/usr/lib64/pkgconfig/gstreamer-sctp-1.0.pc
+%{_libdir}/pkgconfig/gstreamer-sctp-%{majorminor}.pc
+%{_libdir}/pkgconfig/gstreamer-transcoder-%{majorminor}.pc
+%{_libdir}/pkgconfig/gstreamer-bad-transcoder-%{majorminor}.pc
+%{_libdir}/pkgconfig/gstreamer-webrtc-%{majorminor}.pc
+%{_libdir}/pkgconfig/gstreamer-vulkan-%{majorminor}.pc
+
 
 %changelog
+
+* Fri Jul 10 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.17.2-7
+- Updated to 1.17.2
 
 * Wed Jul 08 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.16.2-9
 - Rebuilt for aom
