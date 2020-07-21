@@ -529,7 +529,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstfbdevsink.so
 %endif
  
-%if 0%{?fedora} >= 31 || 0%{?rhel} >= 9
+%if 0%{?fedora} >= 30 || 0%{?rhel} >= 9
 %{_libdir}/gstreamer-%{majorminor}/libgstfdkaac.so
 %endif
 %{_libdir}/gstreamer-%{majorminor}/libgstfestival.so
