@@ -124,7 +124,7 @@ BuildRequires:  pkgconfig(libva-drm)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(egl)
 BuildRequires:  pkgconfig(gl)
-BuildRequires:  pkgconfig(glesv1_cm)
+BuildRequires:  mesa-libGLES-devel
 BuildRequires:  pkgconfig(glesv2)
 BuildRequires:  libXext-devel
 BuildRequires:  openal-soft-devel
