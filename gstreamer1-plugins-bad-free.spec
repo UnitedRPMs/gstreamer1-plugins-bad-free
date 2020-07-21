@@ -90,6 +90,7 @@ BuildRequires:  libaom-devel
 BuildRequires:  libmicrodns-devel
 %if 0%{?fedora} >= 31
 BuildRequires:  libopenmpt-devel
+BuildRequires:  pkgconfig(libva-drm)
 %endif
 BuildRequires:  srt-devel
 %if 0
@@ -122,7 +123,6 @@ BuildRequires:  libofa-devel
 #BuildRequires:  libmusicbrainz-devel
 #BuildRequires:  libtimidity-devel
 BuildRequires:  libvdpau-devel
-BuildRequires:  pkgconfig(libva-drm)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(egl)
 BuildRequires:  pkgconfig(gl)
@@ -293,13 +293,15 @@ aren't tested well enough, or the code is not of good enough quality.
     -D sctp=disabled -D svthevcenc=disabled -D voaacenc=disabled \
     -D zxing=disabled -D wpe=disabled -D x11=disabled \
     -D openh264=disabled -D srt=enabled  \
-    -D lv2=enabled -D va=enabled -D spandsp=enabled \
+    -D lv2=enabled -D spandsp=enabled \
     -D openal=enabled -D vdpau=disabled -D uvch264=enabled \
     -D ltc=enabled -D gme=enabled \
     %if 0%{?fedora} >= 31
-    -D openmpt=enabled 
+    -D openmpt=enabled \
+    -D va=enabled \
     %else
-    -D openmpt=disabled
+    -D openmpt=disabled \
+    -D va=disabled \
     %endif
 
 %meson_build 
