@@ -88,7 +88,9 @@ BuildRequires:  vulkan-devel
 BuildRequires:  webrtc-audio-processing-devel
 BuildRequires:  libaom-devel
 BuildRequires:  libmicrodns-devel
+%if 0%{?fedora} >= 31
 BuildRequires:  libopenmpt-devel
+%endif
 BuildRequires:  srt-devel
 %if 0
 BuildRequires:  wpewebkit-devel
@@ -290,10 +292,15 @@ aren't tested well enough, or the code is not of good enough quality.
     -D libde265=disabled -D musepack=disabled -D openni2=disabled \
     -D sctp=disabled -D svthevcenc=disabled -D voaacenc=disabled \
     -D zxing=disabled -D wpe=disabled -D x11=disabled \
-    -D openh264=disabled -D srt=enabled -D openmpt=enabled \
+    -D openh264=disabled -D srt=enabled  \
     -D lv2=enabled -D va=enabled -D spandsp=enabled \
     -D openal=enabled -D vdpau=disabled -D uvch264=enabled \
-    -D ltc=enabled -D gme=enabled
+    -D ltc=enabled -D gme=enabled \
+    %if 0%{?fedora} >= 31
+    -D openmpt=enabled 
+    %else
+    -D openmpt=disabled
+    %endif
 
 %meson_build 
 
