@@ -600,7 +600,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstladspa.so
 %{_libdir}/gstreamer-%{majorminor}/libgstmicrodns.so
 %{_libdir}/gstreamer-%{majorminor}/libgstnvcodec.so
-%{_libdir}/gstreamer-%{majorminor}/libgstopenmpt.so
+
 %{_libdir}/gstreamer-%{majorminor}/libgstopusparse.so
 %{_libdir}/gstreamer-%{majorminor}/libgstrist.so
 %{_libdir}/gstreamer-%{majorminor}/libgstsndfile.so
@@ -653,7 +653,10 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 %{_libdir}/gstreamer-%{majorminor}/libgstspandsp.so
 %{_libdir}/gstreamer-%{majorminor}/libgstteletext.so
+%if 0%{?fedora} >= 31
 %{_libdir}/gstreamer-%{majorminor}/libgstva.so
+%{_libdir}/gstreamer-%{majorminor}/libgstopenmpt.so
+%endif
 %{_libdir}/gstreamer-%{majorminor}/libgstopencv.so
 
  
