@@ -18,7 +18,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.17.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -400,6 +400,8 @@ chrpath --delete %{buildroot}/%{_libdir}/libgstadaptivedemux-%{majorminor}.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 
+# It is provided by gst-transcoder, we don't need it here
+rm -f %{buildroot}/%{_bindir}/gst-transcoder-%{majorminor}
 
 # It is provided by freeworld, we don't need it here
 #rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
@@ -457,7 +459,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %doc AUTHORS README REQUIREMENTS
  
 %{_metainfodir}/*.appdata.xml
-%{_bindir}/gst-transcoder-%{majorminor}
  
 # presets
 %dir %{_datadir}/gstreamer-%{majorminor}/presets/
@@ -739,6 +740,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Sun Jul 26 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.17.2-8
+- Deleted gst-transcoder 
 
 * Fri Jul 10 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.17.2-7
 - Updated to 1.17.2
