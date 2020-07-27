@@ -1,8 +1,7 @@
 %global         majorminor 1.0
 %global         _gobject_introspection  1.31.1
 
-%undefine _debuginfo_subpackages
-%undefine _debugsource_packages
+%global debug_package %{nil}
 
 %bcond_with libfdk-aac
 # We need to test it
