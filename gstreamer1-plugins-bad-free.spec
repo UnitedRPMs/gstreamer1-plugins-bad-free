@@ -1,6 +1,8 @@
 %global         majorminor 1.0
 %global         _gobject_introspection  1.31.1
-%global extdirs ext/aom
+
+%undefine _debuginfo_subpackages
+%undefine _debugsource_packages
 
 %bcond_with libfdk-aac
 # We need to test it
