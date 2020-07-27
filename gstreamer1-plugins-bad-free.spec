@@ -407,7 +407,7 @@ rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgsttranscode.so
 rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so.*
 rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so
 rm -f %{buildroot}/%{_libdir}/girepository-1.0/GstTranscoder-1.0.typelib
-rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/transcoder
+rm -rf %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/transcoder
 rm -f %{buildroot}/%{_libdir}/pkgconfig/gstreamer-transcoder-%{majorminor}.pc
 rm -f %{buildroot}/%{_datadir}/gir-1.0/GstTranscoder-%{majorminor}.gir
 
