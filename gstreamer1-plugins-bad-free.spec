@@ -18,7 +18,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.17.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -401,7 +401,20 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstcamerabin
 chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
 
 # It is provided by gst-transcoder, we don't need it here
+# but gstreamer-bad-transcoder exist now; maybe is necessary make a new sub-package
 rm -f %{buildroot}/%{_bindir}/gst-transcoder-%{majorminor}
+rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgsttranscode.so
+rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so.*
+rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so
+rm -f %{buildroot}/%{_libdir}/girepository-1.0/GstTranscoder-1.0.typelib
+rm -f %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/transcoder
+rm -f %{buildroot}/%{_libdir}/pkgconfig/gstreamer-transcoder-%{majorminor}.pc
+rm -f %{buildroot}/%{_datadir}/gir-1.0/GstTranscoder-%{majorminor}.gir
+
+# presets
+rm -rf %{buildroot}/%{_datadir}/gstreamer-%{majorminor}/presets/
+rm -rf %{buildroot}/%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/
+##########
 
 # It is provided by freeworld, we don't need it here
 #rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstdvbsuboverlay.so 
@@ -460,20 +473,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
  
 %{_metainfodir}/*.appdata.xml
  
-# presets
-%dir %{_datadir}/gstreamer-%{majorminor}/presets/
-%{_datadir}/gstreamer-%{majorminor}/presets/GstFreeverb.prs
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/device/dvd.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/avi.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/flv.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/mkv.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/mp3.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/mp4.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/oga.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/ogv.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/file-extension/webm.gep
-%{_datadir}/gstreamer-%{majorminor}/encoding-profiles/online-services/youtube.gep
- 
 # opencv data
 #{_datadir}/gst-plugins-bad/%{majorminor}/opencv_haarcascades/
  
@@ -488,7 +487,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstplayer-%{majorminor}.so.*
 %{_libdir}/libgstphotography-%{majorminor}.so.*
 %{_libdir}/libgstsctp-%{majorminor}.so.*
-%{_libdir}/libgsttranscoder-%{majorminor}.so.*
 %{_libdir}/libgsturidownloader-%{majorminor}.so.*
 %{_libdir}/libgstvulkan-%{majorminor}.so.*
 %{_libdir}/libgstwebrtc-%{majorminor}.so.*
@@ -503,7 +501,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/girepository-1.0/GstInsertBin-1.0.typelib
 %{_libdir}/girepository-1.0/GstMpegts-1.0.typelib
 %{_libdir}/girepository-1.0/GstPlayer-1.0.typelib
-%{_libdir}/girepository-1.0/GstTranscoder-1.0.typelib
 %{_libdir}/girepository-1.0/GstVulkan-1.0.typelib
 %{_libdir}/girepository-1.0/GstWebRTC-1.0.typelib
 
@@ -574,7 +571,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstsubenc.so
 %{_libdir}/gstreamer-%{majorminor}/libgstswitchbin.so
 %{_libdir}/gstreamer-%{majorminor}/libgsttimecode.so
-%{_libdir}/gstreamer-%{majorminor}/libgsttranscode.so
 %{_libdir}/gstreamer-%{majorminor}/libgstuvch264.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvideofiltersbad.so
 %{_libdir}/gstreamer-%{majorminor}/libgstvideoframe_audiolevel.so
@@ -682,7 +678,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstInsertBin-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstMpegts-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstPlayer-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstTranscoder-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstVulkan-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
  
@@ -697,7 +692,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstplayer-%{majorminor}.so
 %{_libdir}/libgstphotography-%{majorminor}.so
 %{_libdir}/libgstsctp-%{majorminor}.so
-%{_libdir}/libgsttranscoder-%{majorminor}.so
 %{_libdir}/libgsturidownloader-%{majorminor}.so
 %{_libdir}/libgstvulkan-%{majorminor}.so
 %{_libdir}/libgstwebrtc-%{majorminor}.so
@@ -715,7 +709,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_includedir}/gstreamer-%{majorminor}/gst/mpegts
 %{_includedir}/gstreamer-%{majorminor}/gst/player
 %{_includedir}/gstreamer-%{majorminor}/gst/sctp
-%{_includedir}/gstreamer-%{majorminor}/gst/transcoder
 %{_includedir}/gstreamer-%{majorminor}/gst/uridownloader
 %{_includedir}/gstreamer-%{majorminor}/gst/vulkan/
 %{_includedir}/gstreamer-%{majorminor}/gst/webrtc/
@@ -733,13 +726,15 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/pkgconfig/gstreamer-player-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-plugins-bad-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-sctp-%{majorminor}.pc
-%{_libdir}/pkgconfig/gstreamer-transcoder-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-bad-transcoder-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-webrtc-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-vulkan-%{majorminor}.pc
 
 
 %changelog
+
+* Sun Jul 26 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.17.2-9
+- Deleted gst-transcoder
 
 * Sun Jul 26 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.17.2-8
 - Deleted gst-transcoder 
