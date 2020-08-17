@@ -272,6 +272,8 @@ aren't tested well enough, or the code is not of good enough quality.
 %{S:1} %{S:0}
 %setup -T -D -n gst-plugins-bad-%{version}
 
+# wtf?
+sed -i 's|4.4.0|4.5.0|g' ext/opencv/meson.build
 
 
 %build
