@@ -305,6 +305,7 @@ sed -i 's|4.4.0|4.5.0|g' ext/opencv/meson.build
     %else
     -D openmpt=disabled \
     -D va=disabled \
+    -D examples=disabled \
     %endif
 
 %meson_build 
@@ -379,7 +380,9 @@ ln -sf %{_libdir}/gstreamer-%{majorminor}/libgstgtk.so %{buildroot}/%{_libdir}/g
 %find_lang gst-plugins-bad-%{majorminor}
 
 # unpackaged files
+if [ -f $RPM_BUILD_ROOT%{_bindir}/playout ]; then
 rm $RPM_BUILD_ROOT%{_bindir}/playout
+fi
 
 find %{buildroot}/ -name '*.la' -exec rm -f {} ';'
 # Kill rpath
