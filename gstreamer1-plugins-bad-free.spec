@@ -18,8 +18,8 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.17.2
-Release:        10%{?dist}
+Version:        1.17.90
+Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -506,6 +506,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/girepository-1.0/GstPlayer-1.0.typelib
 %{_libdir}/girepository-1.0/GstVulkan-1.0.typelib
 %{_libdir}/girepository-1.0/GstWebRTC-1.0.typelib
+%{_libdir}/girepository-1.0/GstVulkanWayland-1.0.typelib
 
 # Plugins without external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstaccurip.so
@@ -683,6 +684,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstPlayer-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstVulkan-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstVulkanWayland-1.0.gir
  
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so
@@ -718,7 +720,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvutils.h
 %{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvvideofilter.h
 %{_includedir}/gstreamer-%{majorminor}/gst/opencv/opencv-prelude.h
-
+# Wtf?
+%{_includedir}/include/gstreamer-1.0/gst/vulkan/vulkan-enumtypes.h 
  
 # pkg-config files
 %{_libdir}/pkgconfig/gstreamer-bad-audio-%{majorminor}.pc
@@ -729,12 +732,16 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/pkgconfig/gstreamer-player-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-plugins-bad-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-sctp-%{majorminor}.pc
-%{_libdir}/pkgconfig/gstreamer-bad-transcoder-%{majorminor}.pc
+#%{_libdir}/pkgconfig/gstreamer-bad-transcoder-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-webrtc-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-vulkan-%{majorminor}.pc
+%{_libdir}/pkgconfig/gstreamer-vulkan-wayland-1.0.pc
 
 
 %changelog
+
+* Tue Aug 25 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.17.90-7
+- Updated to 1.17.90
 
 * Fri Aug 14 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.17.2-10
 - Rebuilt for opencv
