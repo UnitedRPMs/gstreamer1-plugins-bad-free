@@ -724,7 +724,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvvideofilter.h
 %{_includedir}/gstreamer-%{majorminor}/gst/opencv/opencv-prelude.h
 # Wtf?
-%{_includedir}/include/gstreamer-1.0/gst/vulkan/vulkan-enumtypes.h 
+#{_includedir}/include/gstreamer-1.0/gst/vulkan/vulkan-enumtypes.h 
  
 # pkg-config files
 %{_libdir}/pkgconfig/gstreamer-bad-audio-%{majorminor}.pc
