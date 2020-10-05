@@ -19,7 +19,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.18.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -165,6 +165,10 @@ BuildRequires: meson
 BuildRequires: cmake
 BuildRequires: libltc-devel
 BuildRequires: game-music-emu-devel
+
+# Drop after f36
+Provides: gst-transcoder = 1.16.0-4
+Obsoletes: gst-transcoder < 1.16.0-4
 
 %description
 GStreamer is a streaming media framework, based on graphs of elements which
@@ -408,7 +412,7 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.
 
 # It is provided by gst-transcoder, we don't need it here
 # but gstreamer-bad-transcoder exist now; maybe is necessary make a new sub-package
-rm -f %{buildroot}/%{_bindir}/gst-transcoder-%{majorminor}
+#rm -f %{buildroot}/%{_bindir}/gst-transcoder-%{majorminor}
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgsttranscode.so
 rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so.*
 rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so
@@ -476,7 +480,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %files -f gst-plugins-bad-%{majorminor}.lang
 %license COPYING COPYING.LIB
 %doc AUTHORS README REQUIREMENTS
- 
+
+%{_bindir}/gst-transcoder-%{majorminor} 
 %{_metainfodir}/*.appdata.xml
  
 # opencv data
@@ -742,6 +747,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Mon Oct 05 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.0-8
+- Obsolete/Provide gst-transcoder
 
 * Mon Sep 28 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.0-7
 - Updated to 1.18.0
