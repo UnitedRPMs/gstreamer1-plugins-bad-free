@@ -19,7 +19,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.18.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -414,8 +414,8 @@ chrpath --delete %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.
 # but gstreamer-bad-transcoder exist now; maybe is necessary make a new sub-package
 #rm -f %{buildroot}/%{_bindir}/gst-transcoder-%{majorminor}
 rm -f %{buildroot}/%{_libdir}/gstreamer-%{majorminor}/libgsttranscode.so
-rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so.*
-rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so
+#rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so.*
+#rm -f %{buildroot}/%{_libdir}/libgsttranscoder-%{majorminor}.so
 rm -f %{buildroot}/%{_libdir}/girepository-1.0/GstTranscoder-1.0.typelib
 rm -rf %{buildroot}/%{_includedir}/gstreamer-%{majorminor}/gst/transcoder
 rm -f %{buildroot}/%{_libdir}/pkgconfig/gstreamer-transcoder-%{majorminor}.pc
@@ -482,6 +482,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %doc AUTHORS README REQUIREMENTS
 
 %{_bindir}/gst-transcoder-%{majorminor} 
+%{_libdir}/libgsttranscoder-%{majorminor}.so.*
 %{_metainfodir}/*.appdata.xml
  
 # opencv data
@@ -693,7 +694,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstVulkan-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstVulkanWayland-1.0.gir
- 
+
+%{_libdir}/libgsttranscoder-%{majorminor}.so 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
 %{_libdir}/libgstbasecamerabinsrc-%{majorminor}.so
 %{_libdir}/libgstbadaudio-%{majorminor}.so
@@ -747,6 +749,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Wed Oct 07 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.0-9
+- Restore libgsttranscoder libs
 
 * Mon Oct 05 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.0-8
 - Obsolete/Provide gst-transcoder
