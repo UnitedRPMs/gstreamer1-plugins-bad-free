@@ -18,8 +18,8 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.18.0
-Release:        9%{?dist}
+Version:        1.18.1
+Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -749,6 +749,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Thu Oct 29 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.1-7
+- Updated to 1.18.1
 
 * Wed Oct 07 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.0-9
 - Restore libgsttranscoder libs
