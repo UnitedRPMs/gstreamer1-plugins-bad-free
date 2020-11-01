@@ -277,7 +277,7 @@ aren't tested well enough, or the code is not of good enough quality.
 %setup -T -D -n gst-plugins-bad-%{version}
 
 # wtf?
-sed -i 's|4.4.0|4.5.0|g' ext/opencv/meson.build
+sed -i 's|4.5.0|4.5.1|g' ext/opencv/meson.build
 
 
 %build
@@ -478,7 +478,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %files -f gst-plugins-bad-%{majorminor}.lang
-%license COPYING COPYING.LIB
+%license COPYING 
 %doc AUTHORS README REQUIREMENTS
 
 %{_bindir}/gst-transcoder-%{majorminor} 
