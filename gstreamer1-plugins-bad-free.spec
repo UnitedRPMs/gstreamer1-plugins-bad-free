@@ -19,7 +19,7 @@
 
 Name:           gstreamer1-plugins-bad-free
 Version:        1.18.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
@@ -131,7 +131,7 @@ BuildRequires:  mesa-libGLES-devel
 BuildRequires:  pkgconfig(glesv2)
 BuildRequires:  libXext-devel
 BuildRequires:  openal-soft-devel
-BuildRequires:  opencv-devel >= 4.4.0
+BuildRequires:  opencv-devel >= 4.5.0
 BuildRequires:  openjpeg2-devel
 BuildRequires:  pkgconfig(spandsp) >= 0.0.6
 ## Plugins not ported
@@ -749,6 +749,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Thu Nov 05 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.1-9
+- Rebuilt for opencv
 
 * Thu Oct 29 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.1-7
 - Updated to 1.18.1
