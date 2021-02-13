@@ -18,7 +18,7 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.18.2
+Version:        1.18.3
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -131,7 +131,8 @@ BuildRequires:  mesa-libGLES-devel
 BuildRequires:  pkgconfig(glesv2)
 BuildRequires:  libXext-devel
 BuildRequires:  openal-soft-devel
-BuildRequires:  opencv-devel >= 4.5.0
+# FIX ME
+#BuildRequires:  opencv-devel >= 4.5.0
 BuildRequires:  openjpeg2-devel
 BuildRequires:  pkgconfig(spandsp) >= 0.0.6
 ## Plugins not ported
@@ -299,8 +300,8 @@ sed -i 's|4.5.0|4.5.1|g' ext/opencv/meson.build
     -D libde265=disabled -D musepack=disabled -D openni2=disabled \
     -D sctp=disabled -D svthevcenc=disabled -D voaacenc=disabled \
     -D zxing=disabled -D wpe=disabled -D x11=disabled \
-    -D openh264=disabled -D srt=enabled  \
-    -D lv2=enabled -D spandsp=enabled \
+    -D openh264=disabled -D gobject-cast-checks=disabled -D srt=enabled  \
+    -D lv2=enabled -D spandsp=enabled -D opencv=disabled \
     -D openal=enabled -D vdpau=disabled -D uvch264=enabled \
     -D ltc=enabled -D gme=enabled \
     %if 0%{?fedora} >= 31
@@ -505,7 +506,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %if 0%{?fedora} || 0%{?rhel} > 7
 %{_libdir}/libgstwayland-%{majorminor}.so.*
 %endif
-%{_libdir}/libgstopencv-%{majorminor}.so.*
+#%{_libdir}/libgstopencv-%{majorminor}.so.*
 
 	
 %{_libdir}/girepository-1.0/GstBadAudio-1.0.typelib
@@ -667,7 +668,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstva.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenmpt.so
 %endif
-%{_libdir}/gstreamer-%{majorminor}/libgstopencv.so
+
+# %{_libdir}/gstreamer-%{majorminor}/libgstopencv.so
 
  
 %files zbar
@@ -713,7 +715,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %if 0%{?fedora} || 0%{?rhel} > 7
 %{_libdir}/libgstwayland-%{majorminor}.so
 %endif
-%{_libdir}/libgstopencv-%{majorminor}.so
+#%{_libdir}/libgstopencv-%{majorminor}.so
  
 %{_includedir}/gstreamer-%{majorminor}/gst/audio
 %{_includedir}/gstreamer-%{majorminor}/gst/basecamerabinsrc
@@ -727,9 +729,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_includedir}/gstreamer-%{majorminor}/gst/uridownloader
 %{_includedir}/gstreamer-%{majorminor}/gst/vulkan/
 %{_includedir}/gstreamer-%{majorminor}/gst/webrtc/
-%{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvutils.h
-%{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvvideofilter.h
-%{_includedir}/gstreamer-%{majorminor}/gst/opencv/opencv-prelude.h
+#%{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvutils.h
+#%{_includedir}/gstreamer-%{majorminor}/gst/opencv/gstopencvvideofilter.h
+#%{_includedir}/gstreamer-%{majorminor}/gst/opencv/opencv-prelude.h
 # Wtf?
 #{_includedir}/include/gstreamer-1.0/gst/vulkan/vulkan-enumtypes.h 
  
@@ -749,6 +751,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Mon Jan 25 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.3-7
+- Updated to 1.18.3
 
 * Mon Dec 07 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.2-7
 - Updated to 1.18.2
