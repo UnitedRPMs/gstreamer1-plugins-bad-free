@@ -18,7 +18,7 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.18.3
+Version:        1.18.4
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -284,7 +284,7 @@ sed -i 's|4.5.0|4.5.1|g' ext/opencv/meson.build
 %build
 #CFLAGS+=' -fcommon'
 
-%meson \
+meson build --prefix=/usr --libdir=%{_libdir} --libexecdir=/usr/libexec --bindir=/usr/bin --sbindir=/usr/sbin --includedir=/usr/include --datadir=/usr/share --mandir=/usr/share/man --infodir=/usr/share/info --localedir=/usr/share/locale --sysconfdir=/etc \
     -D package-name="Fedora GStreamer-plugins-bad package" \
     -D package-origin="http://download.fedoraproject.org" \
     -D doc=disabled -D magicleap=disabled -D msdk=disabled \
@@ -313,10 +313,10 @@ sed -i 's|4.5.0|4.5.1|g' ext/opencv/meson.build
     -D examples=disabled \
     %endif
 
-%meson_build 
+%meson_build -C build
 
 %install
-%meson_install 
+%meson_install -C build
 
 
 # Register as an AppStream component to be visible in the software center
@@ -751,6 +751,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Mon Apr 19 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.4-7
+- Updated to 1.18.4
 
 * Mon Jan 25 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.3-7
 - Updated to 1.18.3
