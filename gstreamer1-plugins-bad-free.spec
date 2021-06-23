@@ -18,7 +18,7 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.18.4
+Version:        1.19.1
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
@@ -155,8 +155,8 @@ BuildRequires: fdk-aac-free-devel
 %endif
 
 # For aom (av1)
-%if 0%{?fedora} >= 33
-BuildRequires:  libaom-devel >= 2.0.0
+%if 0%{?fedora} >= 34
+BuildRequires:  libaom-devel >= 3.1.1
 %else
 BuildRequires:  libaom-devel
 %endif 
@@ -497,11 +497,13 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstinsertbin-%{majorminor}.so.*
 %{_libdir}/libgstisoff-%{majorminor}.so.*
 %{_libdir}/libgstmpegts-%{majorminor}.so.*
+%{_libdir}/libgstplay-%{majorminor}.so.*
 %{_libdir}/libgstplayer-%{majorminor}.so.*
 %{_libdir}/libgstphotography-%{majorminor}.so.*
 %{_libdir}/libgstsctp-%{majorminor}.so.*
 %{_libdir}/libgsturidownloader-%{majorminor}.so.*
 %{_libdir}/libgstvulkan-%{majorminor}.so.*
+%{_libdir}/libgstva-%{majorminor}.so.*
 %{_libdir}/libgstwebrtc-%{majorminor}.so.*
 %if 0%{?fedora} || 0%{?rhel} > 7
 %{_libdir}/libgstwayland-%{majorminor}.so.*
@@ -517,6 +519,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/girepository-1.0/GstVulkan-1.0.typelib
 %{_libdir}/girepository-1.0/GstWebRTC-1.0.typelib
 %{_libdir}/girepository-1.0/GstVulkanWayland-1.0.typelib
+%{_libdir}/girepository-1.0/GstPlay-1.0.typelib
 
 # Plugins without external dependencies
 %{_libdir}/gstreamer-%{majorminor}/libgstaccurip.so
@@ -532,6 +535,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstautoconvert.so
 %{_libdir}/gstreamer-%{majorminor}/libgstbayer.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin.so
+%{_libdir}/gstreamer-%{majorminor}/libgstcodecalpha.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcamerabin2.so
 %{_libdir}/gstreamer-%{majorminor}/libgstcoloreffects.so
 %{_libdir}/gstreamer-%{majorminor}/libgstdash.so
@@ -635,6 +639,8 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %if !%{with extras}
 %exclude %{_libdir}/gstreamer-%{majorminor}/libgstteletext.so
 %endif
+
+%{_libdir}/gstreamer-%{majorminor}/libgstva.so
  
 #debugging plugin
 %{_libdir}/gstreamer-%{majorminor}/libgstdebugutilsbad.so
@@ -696,6 +702,7 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstVulkan-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstWebRTC-%{majorminor}.gir
 %{_datadir}/gir-1.0/GstVulkanWayland-1.0.gir
+%{_datadir}/gir-1.0/GstPlay-1.0.gir
 
 %{_libdir}/libgsttranscoder-%{majorminor}.so 
 %{_libdir}/libgstadaptivedemux-%{majorminor}.so
@@ -706,16 +713,19 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/libgstinsertbin-%{majorminor}.so
 %{_libdir}/libgstisoff-%{majorminor}.so
 %{_libdir}/libgstmpegts-%{majorminor}.so
+%{_libdir}/libgstplay-%{majorminor}.so
 %{_libdir}/libgstplayer-%{majorminor}.so
 %{_libdir}/libgstphotography-%{majorminor}.so
 %{_libdir}/libgstsctp-%{majorminor}.so
 %{_libdir}/libgsturidownloader-%{majorminor}.so
 %{_libdir}/libgstvulkan-%{majorminor}.so
+%{_libdir}/libgstva-%{majorminor}.so
 %{_libdir}/libgstwebrtc-%{majorminor}.so
 %if 0%{?fedora} || 0%{?rhel} > 7
 %{_libdir}/libgstwayland-%{majorminor}.so
 %endif
 #%{_libdir}/libgstopencv-%{majorminor}.so
+
  
 %{_includedir}/gstreamer-%{majorminor}/gst/audio
 %{_includedir}/gstreamer-%{majorminor}/gst/basecamerabinsrc
@@ -734,6 +744,10 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 #%{_includedir}/gstreamer-%{majorminor}/gst/opencv/opencv-prelude.h
 # Wtf?
 #{_includedir}/include/gstreamer-1.0/gst/vulkan/vulkan-enumtypes.h 
+
+%{_includedir}/gstreamer-%{majorminor}/gst/play/
+%{_includedir}/gstreamer-%{majorminor}/gst/wayland/wayland.h
+
  
 # pkg-config files
 %{_libdir}/pkgconfig/gstreamer-bad-audio-%{majorminor}.pc
@@ -748,9 +762,16 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/pkgconfig/gstreamer-webrtc-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-vulkan-%{majorminor}.pc
 %{_libdir}/pkgconfig/gstreamer-vulkan-wayland-1.0.pc
+%{_libdir}/pkgconfig/gstreamer-play-1.0.pc
+%{_libdir}/pkgconfig/gstreamer-va-1.0.pc
+%{_libdir}/pkgconfig/gstreamer-wayland-1.0.pc
+
 
 
 %changelog
+
+* Sun Jun 20 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.19.1-7
+- Updated to 1.19.1
 
 * Mon Apr 19 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.18.4-7
 - Updated to 1.18.4
