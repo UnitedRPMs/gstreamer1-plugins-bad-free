@@ -1,6 +1,8 @@
 %global         majorminor 1.0
 %global         _gobject_introspection  1.31.1
 
+%global         meson_conf      meson --buildtype=release --prefix=/usr --libdir=%{_libdir} --libexecdir=/usr/libexec --bindir=/usr/bin --sbindir=/usr/sbin --includedir=/usr/include --datadir=/usr/share --mandir=/usr/share/man --infodir=/usr/share/info --localedir=/usr/share/locale --sysconfdir=/etc
+
 %global debug_package %{nil}
 
 %bcond_with libfdk-aac
@@ -18,14 +20,14 @@
 
 
 Name:           gstreamer1-plugins-bad-free
-Version:        1.19.2
+Version:        1.19.3
 Release:        7%{?dist}
 Summary:        GStreamer streaming media framework "bad" plugins
 
 License:        LGPLv2+ and LGPLv2
 URL:            http://gstreamer.freedesktop.org/
 
-Source0:        http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.xz
+Source0:        https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.xz
 Source1:        gst-p-bad-cleanup.sh
 
 # https://gitlab.freedesktop.org/gstreamer/common/-/merge_requests/4
@@ -284,7 +286,7 @@ sed -i 's|4.5.0|4.5.1|g' ext/opencv/meson.build
 %build
 #CFLAGS+=' -fcommon'
 
-meson build --prefix=/usr --libdir=%{_libdir} --libexecdir=/usr/libexec --bindir=/usr/bin --sbindir=/usr/sbin --includedir=/usr/include --datadir=/usr/share --mandir=/usr/share/man --infodir=/usr/share/info --localedir=/usr/share/locale --sysconfdir=/etc \
+%meson_conf _build \
     -D package-name="Fedora GStreamer-plugins-bad package" \
     -D package-origin="http://download.fedoraproject.org" \
     -D doc=disabled -D magicleap=disabled -D msdk=disabled \
@@ -300,10 +302,12 @@ meson build --prefix=/usr --libdir=%{_libdir} --libexecdir=/usr/libexec --bindir
     -D libde265=disabled -D musepack=disabled -D openni2=disabled \
     -D sctp=disabled -D svthevcenc=disabled -D voaacenc=disabled \
     -D zxing=disabled -D wpe=disabled -D x11=disabled \
-    -D openh264=disabled -D gobject-cast-checks=disabled -D srt=enabled  \
+    -D openh264=disabled -D gs=disabled -D isac=disabled \
+    -D onnx=disabled -D openaptx=disabled -Dgpl=enabled \
+    -D gobject-cast-checks=disabled -D srt=enabled  \
     -D lv2=enabled -D spandsp=enabled -D opencv=disabled \
     -D openal=enabled -D vdpau=disabled -D uvch264=enabled \
-    -D ltc=enabled -D gme=enabled \
+    -D ltc=enabled -D gme=enabled -D fdkaac=enabled \
     %if 0%{?fedora} >= 31
     -D openmpt=enabled \
     -D va=enabled \
@@ -313,10 +317,10 @@ meson build --prefix=/usr --libdir=%{_libdir} --libexecdir=/usr/libexec --bindir
     -D examples=disabled \
     %endif
 
-%meson_build -C build
+%meson_build -C _build
 
 %install
-%meson_install -C build
+%meson_install -C _build 
 
 
 # Register as an AppStream component to be visible in the software center
@@ -665,7 +669,6 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 %{_libdir}/gstreamer-%{majorminor}/libgstgme.so
 %{_libdir}/gstreamer-%{majorminor}/libgstkate.so
 %{_libdir}/gstreamer-%{majorminor}/libgstmodplug.so
-%{_libdir}/gstreamer-%{majorminor}/libgstofa.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenal.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenexr.so
 %{_libdir}/gstreamer-%{majorminor}/libgstopenjpeg.so
@@ -770,6 +773,9 @@ rm -f %{buildroot}/%{_datadir}/gir-%{majorminor}/GstGL-%{majorminor}.gir
 
 
 %changelog
+
+* Wed Nov 17 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.19.3-7
+- Updated to 1.19.3
 
 * Mon Oct 04 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.19.2-7
 - Updated to 1.19.2
